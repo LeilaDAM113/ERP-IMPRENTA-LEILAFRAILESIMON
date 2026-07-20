@@ -20,12 +20,6 @@ public class Factura {
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
     private OrdenTrabajo idOrdenTrabajo;
-    @ManyToOne
-    @JoinColumn(name = "id_presupuesto")
-    private Presupuesto idPresupuesto;
-    @ManyToOne
-    @JoinColumn(name = "id_albaran")
-    private Albaran idAlbaran;
     private LocalDate fechaEmision;
     private LocalDate fechaPago;
     private String metodoPago;
