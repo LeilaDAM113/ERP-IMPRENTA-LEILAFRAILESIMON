@@ -7,6 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 
+/*
+ * EL "PORTERO" QUE BUSCA AL USUARIO CUANDO ALGUIEN INTENTA ENTRAR.
+ * Spring Security llama a esta clase automaticamente en cada login, pasandole
+ * el email que ha escrito la persona. Aqui:
+ *   1. buscamos ese email en la base de datos (con el repositorio)
+ *   2. si existe -> lo envolvemos en el "traductor" (TrabajadorUserDetails)
+ *   3. si no existe -> lanzamos error y Spring rechaza el acceso
+ * Ojo: aqui NO comparamos la contrasena; de eso se encarga Spring por su cuenta.
+ */
 @Service
 public class TrabajadorUserDetailsService implements UserDetailsService {
     private final TrabajadorRepository trabajadorRepository;

@@ -29,6 +29,9 @@ public class Trabajador {
     private LocalDate fechaAlta;
     private Boolean activo;
 
+    // Getters SIN setters: otras clases (login/seguridad) necesitan LEER estos
+    // campos (email, contrasena...), pero no dejamos ESCRIBIRLOS desde fuera;
+    // de guardar datos se encarga Hibernate. Es "mirar, pero no tocar".
     public Integer getId() {
         return id;
     }
