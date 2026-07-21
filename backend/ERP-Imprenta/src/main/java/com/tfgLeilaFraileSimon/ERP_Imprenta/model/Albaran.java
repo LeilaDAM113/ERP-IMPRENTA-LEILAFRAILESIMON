@@ -26,8 +26,6 @@ public class Albaran {
     private LocalDate fechaEmision;
     private LocalDate fechaEntrega;
     private String observaciones;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String estado;
 
 }

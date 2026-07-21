@@ -20,9 +20,7 @@ public class Pedido {
     private Integer id;
     private BigDecimal importe;
     private String descripcion;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String estado;
     @ManyToOne
     @JoinColumn(name = "id_inventario")
     private Inventario inventario;

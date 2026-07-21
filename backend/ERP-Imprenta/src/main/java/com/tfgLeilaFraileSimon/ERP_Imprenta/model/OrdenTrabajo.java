@@ -27,10 +27,6 @@ public class OrdenTrabajo {
     private Trabajador trabajador;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    @ManyToOne
-    @JoinColumn(name = "id_prioridad")
-    private Prioridad prioridad;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String prioridad;
+    private String estado;
 }

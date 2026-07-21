@@ -3,3 +3,5 @@ target/
 .idea/
 *.iml
 .vscode/
+# Config local con credenciales (nunca subir)
+local.properties
