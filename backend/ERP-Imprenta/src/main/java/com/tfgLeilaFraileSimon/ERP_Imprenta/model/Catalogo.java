@@ -1,5 +1,7 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,5 +15,5 @@ public class Catalogo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descripcion;
-    private Number precioVenta;
+    private BigDecimal precioVenta;
 }

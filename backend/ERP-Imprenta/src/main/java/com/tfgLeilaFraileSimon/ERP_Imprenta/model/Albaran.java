@@ -18,10 +18,10 @@ public class Albaran {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente idCliente;
+    private Cliente cliente;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
-    private OrdenTrabajo idOrdenTrabajo;
+    private OrdenTrabajo ordenTrabajo;
     private String numero;
     private LocalDate fechaEmision;
     private LocalDate fechaEntrega;

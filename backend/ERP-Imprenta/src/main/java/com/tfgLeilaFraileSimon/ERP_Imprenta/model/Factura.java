@@ -1,5 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -19,12 +20,12 @@ public class Factura {
     private String numero;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
-    private OrdenTrabajo idOrdenTrabajo;
+    private OrdenTrabajo ordenTrabajo;
     private LocalDate fechaEmision;
     private LocalDate fechaPago;
     private String metodoPago;
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private Estado estado;
-    private Number total;
+    private BigDecimal total;
 }

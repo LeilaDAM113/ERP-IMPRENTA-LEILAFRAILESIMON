@@ -1,5 +1,7 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +18,12 @@ public class LineaPresupuesto {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_presupuesto")
-    private Presupuesto idPresupuesto;
+    private Presupuesto presupuesto;
     @ManyToOne
     @JoinColumn(name = "id_producto")
-    private Catalogo idProducto;
-    private Number precioUnitario;
-    private Number cantidad;
-    private Number subtotal;
-    private Number total;
+    private Catalogo producto;
+    private BigDecimal precioUnitario;
+    private Integer cantidad;
+    private BigDecimal subtotal;
+    private BigDecimal total;
 }

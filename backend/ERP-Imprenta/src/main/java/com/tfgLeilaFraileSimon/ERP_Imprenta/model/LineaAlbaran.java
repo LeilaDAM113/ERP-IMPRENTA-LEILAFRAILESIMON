@@ -16,9 +16,9 @@ public class LineaAlbaran {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_albaran")
-    private Albaran idAlbaran;
+    private Albaran albaran;
     @ManyToOne
     @JoinColumn(name = "id_producto")
-    private Catalogo idProducto;
-    private Number cantidad;
+    private Catalogo producto;
+    private Integer cantidad;
 }

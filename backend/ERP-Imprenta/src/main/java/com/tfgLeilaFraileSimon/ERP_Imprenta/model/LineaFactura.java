@@ -16,15 +16,15 @@ public class LineaFactura {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_factura")
-    private Factura idFactura;
+    private Factura factura;
     @ManyToOne
     @JoinColumn(name = "id_producto")
-    private Catalogo idProducto;
+    private Catalogo producto;
     @ManyToOne
     @JoinColumn(name = "id_linea_albaran")
-    private LineaAlbaran idLineaAlbaran;
+    private LineaAlbaran lineaAlbaran;
     @ManyToOne
     @JoinColumn(name = "id_linea_presupuesto")
-    private LineaPresupuesto idLineaPresupuesto;
-    private Number cantidad;
+    private LineaPresupuesto lineaPresupuesto;
+    private Integer cantidad;
 }

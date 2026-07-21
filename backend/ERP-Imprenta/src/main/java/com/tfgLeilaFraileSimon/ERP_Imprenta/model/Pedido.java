@@ -1,6 +1,7 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -17,20 +18,18 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
-    private Number importe;
+    private BigDecimal importe;
     private String descripcion;
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private Estado estado;
     @ManyToOne
     @JoinColumn(name = "id_inventario")
-    private Inventario idInventario;
+    private Inventario inventario;
     private LocalDate fechaPedido;
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
-    private Proveedor idProveedor;
-    private Number cantidad;
+    private Proveedor proveedor;
+    private Integer cantidad;
 
 }
-
-

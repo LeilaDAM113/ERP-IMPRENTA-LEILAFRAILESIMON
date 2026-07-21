@@ -21,10 +21,10 @@ public class OrdenTrabajo {
     private String descripcion;
     @ManyToOne
     @JoinColumn(name = "id_presupuesto")
-    private Presupuesto idPresupuesto;
+    private Presupuesto presupuesto;
     @ManyToOne
     @JoinColumn(name = "id_trabajador")
-    private Trabajador idTrabajador;
+    private Trabajador trabajador;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     @ManyToOne

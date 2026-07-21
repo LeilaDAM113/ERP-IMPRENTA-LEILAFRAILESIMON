@@ -16,7 +16,7 @@ public class Empresa {
     private Integer id;
     @OneToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente idCliente;
+    private Cliente cliente;
     private String cif;
     private String nombreComercial;
     private String razonSocial;
