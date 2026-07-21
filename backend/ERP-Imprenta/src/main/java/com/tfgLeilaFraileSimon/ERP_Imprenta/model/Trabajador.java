@@ -1,5 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -22,8 +23,8 @@ public class Trabajador {
     private String email;
     @ManyToOne
     @JoinColumn(name = "id_puesto")
-    private Puesto idPuesto;
-    private Number salario;
+    private Puesto puesto;
+    private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
 }

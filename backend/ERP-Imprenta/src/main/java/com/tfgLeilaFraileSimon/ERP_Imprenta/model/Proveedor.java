@@ -32,5 +32,5 @@ public class Proveedor {
     private LocalDate fechaAlta;
     @ManyToOne
     @JoinColumn(name = "id_producto")
-    private Catalogo idProducto;
+    private Catalogo producto;
 }

@@ -1,5 +1,7 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +18,9 @@ public class OrdenMaquinaria {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
-    private OrdenTrabajo idOrdenTrabajo;
+    private OrdenTrabajo ordenTrabajo;
     @ManyToOne
     @JoinColumn(name = "id_maquinaria")
-    private Maquinaria idMaquinaria;
-    private Number horasUso;
+    private Maquinaria maquinaria;
+    private BigDecimal horasUso;
 }

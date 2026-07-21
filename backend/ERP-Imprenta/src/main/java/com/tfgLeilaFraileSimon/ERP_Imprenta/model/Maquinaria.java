@@ -1,5 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -22,12 +23,12 @@ public class Maquinaria {
     private String numeroSerie;
     private String tipo;
     private LocalDate fechaCompra;
-    private Number precioCompra;
+    private BigDecimal precioCompra;
     @ManyToOne
     @JoinColumn(name = "id_estado")
     private Estado estado;
     private Boolean activo;
-    private Number rentabilidad;
+    private BigDecimal rentabilidad;
     private LocalDate ultimaRevision;
     private String observaciones;
 }

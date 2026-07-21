@@ -16,8 +16,8 @@ public class OrdenEmpleado {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
-    private OrdenTrabajo idOrdenTrabajo;
+    private OrdenTrabajo ordenTrabajo;
     @ManyToOne
     @JoinColumn(name = "id_trabajador")
-    private Trabajador idTrabajador;
+    private Trabajador trabajador;
 }

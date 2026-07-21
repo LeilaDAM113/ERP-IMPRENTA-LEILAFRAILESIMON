@@ -16,7 +16,7 @@ public class ContactoEmpresa {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_empresa")
-    private Empresa idEmpresa;
+    private Empresa empresa;
     private String nombreCompleto;
     private String departamento;
     private String telefono;
