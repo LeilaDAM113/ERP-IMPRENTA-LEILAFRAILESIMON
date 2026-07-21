@@ -28,4 +28,44 @@ public class Trabajador {
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public Puesto getPuesto() {
+        return puesto;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public LocalDate getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
 }
