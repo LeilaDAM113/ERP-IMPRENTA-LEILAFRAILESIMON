@@ -25,9 +25,7 @@ public class Pago {
     private LocalDate fechaPago;
     private String metodoPago;
     private BigDecimal importe;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String estado;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
     private OrdenTrabajo ordenTrabajo;

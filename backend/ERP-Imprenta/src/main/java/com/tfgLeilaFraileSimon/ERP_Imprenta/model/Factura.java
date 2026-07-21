@@ -24,8 +24,6 @@ public class Factura {
     private LocalDate fechaEmision;
     private LocalDate fechaPago;
     private String metodoPago;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String estado;
     private BigDecimal total;
 }

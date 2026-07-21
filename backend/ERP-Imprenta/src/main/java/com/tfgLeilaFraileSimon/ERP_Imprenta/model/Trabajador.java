@@ -21,6 +21,7 @@ public class Trabajador {
     private String dni;
     private String telefono;
     private String email;
+    private String contrasena;
     @ManyToOne
     @JoinColumn(name = "id_puesto")
     private Puesto puesto;

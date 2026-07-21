@@ -25,7 +25,5 @@ public class Presupuesto {
     private String descripcion;
     private BigDecimal importe;
     private BigDecimal subtotal;
-    @ManyToOne
-    @JoinColumn(name = "id_estado")
-    private Estado estado;
+    private String estado;
 }
