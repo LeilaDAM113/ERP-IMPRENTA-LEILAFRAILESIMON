@@ -20,10 +20,7 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 public class AuthController {
 
     @GetMapping
-    public String me(@AuthenticationPrincipal Trabajador user) {
-        if(user.getNombreCompleto()!=null){
+    public String me(@AuthenticationPrincipal Trabajador user) {      
         return "Hola, " + user.getNombreCompleto() + " (" + user.getEmail() + ")";
-        }
-        return "No existe la persona con ese email";
     }
 }
