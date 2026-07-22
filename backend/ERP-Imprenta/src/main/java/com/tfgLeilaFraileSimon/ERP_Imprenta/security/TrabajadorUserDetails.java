@@ -36,7 +36,7 @@ public class TrabajadorUserDetails implements UserDetails {
     // Spring pregunta "cual es la contrasena guardada" (ya cifrada) para compararla
     @Override
     public String getPassword() {
-        return trabajador.getContrasena();
+        return trabajador.getPassword();
     }
 
     // Permisos/roles del usuario. De momento todos tienen el mismo (ROLE_USER)
