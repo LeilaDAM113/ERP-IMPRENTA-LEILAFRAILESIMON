@@ -23,6 +23,12 @@ public class TrabajadorUserDetails implements UserDetails {
         this.trabajador = trabajador;
     }
 
+    public String getNombreCompleto() {
+         return trabajador.getNombreCompleto(); 
+        }
+
+
+
     public Trabajador getTrabajador() {
         return trabajador;
     }

@@ -1,4 +1,4 @@
-package com.tfgLeilaFraileSimon.ERP_Imprenta.security;
+package com.tfgLeilaFraileSimon.ERP_Imprenta.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.security.TrabajadorUserDetails;
 
 /*
  * EL "PORTERO" QUE BUSCA AL USUARIO CUANDO ALGUIEN INTENTA ENTRAR.
