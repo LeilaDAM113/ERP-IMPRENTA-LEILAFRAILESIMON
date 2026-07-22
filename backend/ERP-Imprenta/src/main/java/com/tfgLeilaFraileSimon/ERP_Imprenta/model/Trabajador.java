@@ -2,6 +2,8 @@ package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,9 +13,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 @Entity
 @Table(name = "trabajador")
-public class Trabajador {
+public class Trabajador implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -62,4 +68,30 @@ public void setActivo(Boolean activo) { this.activo = activo; }
 
 public String getRol() { return rol; }
 public void setRol(String rol) { this.rol = rol; }
+
+// --- Metodos que exige UserDetails (Spring Security) ---
+
+// Spring pregunta "cual es el nombre de usuario" -> usamos el email
+@Override
+public String getUsername() { return email; }
+
+// Permisos/roles. De momento todos tienen el mismo (ROLE_USER)
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+}
+
+// Si el trabajador esta dado de baja (activo=false) no puede entrar
+@Override
+public boolean isEnabled() { return Boolean.TRUE.equals(activo); }
+
+// Estas tres las pide Spring; devolvemos true = "cuenta sin caducar/bloquear"
+@Override
+public boolean isAccountNonExpired() { return true; }
+
+@Override
+public boolean isAccountNonLocked() { return true; }
+
+@Override
+public boolean isCredentialsNonExpired() { return true; }
 }
