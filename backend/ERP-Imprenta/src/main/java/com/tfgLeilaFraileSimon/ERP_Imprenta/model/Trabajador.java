@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,10 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
+// Trabajador ES ADEMAS el usuario del sistema: implementa UserDetails para que
+// Spring Security pueda autenticarlo directamente (login por email + password).
 @Entity
 @Table(name = "trabajador")
 public class Trabajador implements UserDetails {
@@ -69,29 +71,39 @@ public void setActivo(Boolean activo) { this.activo = activo; }
 public String getRol() { return rol; }
 public void setRol(String rol) { this.rol = rol; }
 
-// --- Metodos que exige UserDetails (Spring Security) ---
+    // --- Metodos que exige UserDetails (Spring Security) ---
 
-// Spring pregunta "cual es el nombre de usuario" -> usamos el email
-@Override
-public String getUsername() { return email; }
+    // El "nombre de usuario" con el que se hace login -> el email
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
-// Permisos/roles. De momento todos tienen el mismo (ROLE_USER)
-@Override
-public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-}
+    // Permisos/roles del usuario. De momento todos tienen el mismo (ROLE_USER)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
-// Si el trabajador esta dado de baja (activo=false) no puede entrar
-@Override
-public boolean isEnabled() { return Boolean.TRUE.equals(activo); }
+    // Si el trabajador esta dado de baja (activo=false) no puede entrar
+    @Override
+    public boolean isEnabled() {
+        return Boolean.TRUE.equals(getActivo());
+    }
 
-// Estas tres las pide Spring; devolvemos true = "cuenta sin caducar/bloquear"
-@Override
-public boolean isAccountNonExpired() { return true; }
+    // Estas tres las pide Spring; true = "cuenta sin caducar/bloquear"
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-@Override
-public boolean isAccountNonLocked() { return true; }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-@Override
-public boolean isCredentialsNonExpired() { return true; }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 }
