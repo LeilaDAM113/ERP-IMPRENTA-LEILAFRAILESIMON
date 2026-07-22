@@ -21,54 +21,100 @@ public class Trabajador {
     private String dni;
     private String telefono;
     private String email;
-    private String contrasena;
+    private String password;
     @ManyToOne
     @JoinColumn(name = "id_puesto")
     private Puesto puesto;
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
+    private String rol;
 
-    // Getters SIN setters: otras clases (login/seguridad) necesitan LEER estos
-    // campos (email, contrasena...), pero no dejamos ESCRIBIRLOS desde fuera;
-    // de guardar datos se encarga Hibernate. Es "mirar, pero no tocar".
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombreCompleto() {
         return nombreCompleto;
     }
 
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
+
     public String getDni() {
         return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getTelefono() {
         return telefono;
     }
 
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public String getEmail() {
         return email;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Puesto getPuesto() {
         return puesto;
     }
 
+    public void setPuesto(Puesto puesto) {
+        this.puesto = puesto;
+    }
+
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
     }
 
     public LocalDate getFechaAlta() {
         return fechaAlta;
     }
 
+    public void setFechaAlta(LocalDate fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
+
     public Boolean getActivo() {
         return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }
