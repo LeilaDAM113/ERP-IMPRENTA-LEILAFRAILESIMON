@@ -29,4 +29,36 @@ public class OrdenTrabajo {
     private LocalDate fechaFin;
     private String prioridad;
     private String estado;
+
+    // --- Getters y setters ---
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
+
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public Presupuesto getPresupuesto() { return presupuesto; }
+    public void setPresupuesto(Presupuesto presupuesto) { this.presupuesto = presupuesto; }
+
+    public Trabajador getTrabajador() { return trabajador; }
+    public void setTrabajador(Trabajador trabajador) { this.trabajador = trabajador; }
+
+    public LocalDate getFechaInicio() { return fechaInicio; }
+    public void setFechaInicio(LocalDate fechaInicio) { this.fechaInicio = fechaInicio; }
+
+    public LocalDate getFechaFin() { return fechaFin; }
+    public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
+
+    public String getPrioridad() { return prioridad; }
+    public void setPrioridad(String prioridad) { this.prioridad = prioridad; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+
 }

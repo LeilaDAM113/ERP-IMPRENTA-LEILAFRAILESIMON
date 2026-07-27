@@ -30,4 +30,30 @@ public class Pedido {
     private Proveedor proveedor;
     private Integer cantidad;
 
+
+    // --- Getters y setters ---
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public BigDecimal getImporte() { return importe; }
+    public void setImporte(BigDecimal importe) { this.importe = importe; }
+
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+
+    public Inventario getInventario() { return inventario; }
+    public void setInventario(Inventario inventario) { this.inventario = inventario; }
+
+    public LocalDate getFechaPedido() { return fechaPedido; }
+    public void setFechaPedido(LocalDate fechaPedido) { this.fechaPedido = fechaPedido; }
+
+    public Proveedor getProveedor() { return proveedor; }
+    public void setProveedor(Proveedor proveedor) { this.proveedor = proveedor; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
 }

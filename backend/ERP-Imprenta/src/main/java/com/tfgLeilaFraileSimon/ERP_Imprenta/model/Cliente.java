@@ -19,4 +19,24 @@ public class Cliente {
     private String telefono;
     private String email;
     private LocalDate fechaAlta;
+
+    // --- Getters y setters ---
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+
+    public String getTipoCliente() { return tipoCliente; }
+    public void setTipoCliente(String tipoCliente) { this.tipoCliente = tipoCliente; }
+
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public LocalDate getFechaAlta() { return fechaAlta; }
+    public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
+
 }
