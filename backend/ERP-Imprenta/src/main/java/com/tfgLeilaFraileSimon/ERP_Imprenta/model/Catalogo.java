@@ -16,4 +16,15 @@ public class Catalogo {
     private Integer id;
     private String descripcion;
     private BigDecimal precioVenta;
+
+    // --- Getters y setters ---
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public BigDecimal getPrecioVenta() { return precioVenta; }
+    public void setPrecioVenta(BigDecimal precioVenta) { this.precioVenta = precioVenta; }
+
 }

@@ -9,6 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +32,8 @@ public class Trabajador implements UserDetails {
     private String dni;
     private String telefono;
     private String email;
+    // WRITE_ONLY: se puede ENVIAR (al crear/actualizar) pero NUNCA se devuelve en las respuestas JSON
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
     @ManyToOne
     @JoinColumn(name = "id_puesto")
