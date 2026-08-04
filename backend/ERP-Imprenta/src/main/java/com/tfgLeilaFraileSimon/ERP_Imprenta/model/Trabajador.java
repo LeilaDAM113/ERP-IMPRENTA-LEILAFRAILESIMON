@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 // Trabajador ES ADEMAS el usuario del sistema: implementa UserDetails para que
 // Spring Security pueda autenticarlo directamente (login por email + password).
@@ -31,9 +35,27 @@ public class Trabajador implements UserDetails {
     private String nombreCompleto;
     private String dni;
     private String telefono;
+    // unique = true evita que dos trabajadores compartan email: el login busca
+    // por email esperando encontrar como mucho UNO, y si hubiera repetidos
+    // fallaria de forma rara. @NotBlank/@Email comprueban el formato al recibir
+    // el JSON (necesita @Valid en el controlador para activarse).
+    @Column(unique = true)
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El email no tiene un formato valido")
     private String email;
-    // WRITE_ONLY: se puede ENVIAR (al crear/actualizar) pero NUNCA se devuelve en las respuestas JSON
+    // WRITE_ONLY: se puede ENVIAR (al crear/actualizar) pero NUNCA se devuelve en las respuestas JSON.
+    // Distincion importante:
+    //  - En la PETICION (JSON) SI puede venir vacia al actualizar -> se
+    //    interpreta como "no cambies la contrasena" en TrabajadorService.
+    //    Por eso @Size no lleva @NotBlank: admite null en el JSON de entrada.
+    //  - En la BASE DE DATOS nunca debe quedar guardada como null. Eso lo
+    //    garantiza TrabajadorService (obliga a mandarla al crear, y al
+    //    actualizar conserva la que ya habia si no llega una nueva) y,
+    //    como ultima red de seguridad, nullable = false: si por lo que sea
+    //    se intentara guardar sin contrasena, la base de datos lo rechaza.
+    @Column(nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
+    @Size(min = 8, message = "La contrasena debe tener al menos 8 caracteres")
     private String password;
     @ManyToOne
     @JoinColumn(name = "id_puesto")
@@ -41,6 +63,13 @@ public class Trabajador implements UserDetails {
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
+    // Texto libre (ADMIN, COMERCIAL, ENCARGADO_TALLER, OPERARIO, TRANSPORTISTA...),
+    // siguiendo la norma del proyecto de no usar tablas de catalogo para esto.
+    // Se usa en getAuthorities() para decidir los permisos de Spring Security.
+    // Igual que la contrasena, nunca debe quedar null en la base de datos:
+    // TrabajadorService le pone "USER" por defecto si no llega ninguno, y
+    // nullable = false es la red de seguridad por si algo se saltara esa logica.
+    @Column(nullable = false)
     private String rol;
 
     public Integer getId() { return id; }
@@ -84,10 +113,18 @@ public void setRol(String rol) { this.rol = rol; }
         return email;
     }
 
-    // Permisos/roles del usuario. De momento todos tienen el mismo (ROLE_USER)
+    // Permisos/roles del usuario, a partir del campo "rol" (texto libre).
+    // Aqui NO se anade el prefijo "ROLE_": la autoridad viaja tal cual esta en
+    // la base de datos (ADMIN, COMERCIAL...). Por eso en los controladores se
+    // comprueba con @PreAuthorize("hasAuthority('ADMIN')") y NO con hasRole(),
+    // que si esperaria el prefijo "ROLE_" por delante.
+    // Si el trabajador no tiene rol asignado (dato viejo, o alguien se olvido
+    // de ponerlo) le damos el rol basico "USER" para que al menos pueda
+    // entrar, aunque sin permisos de ADMIN.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        String rolEfectivo = (rol == null || rol.isBlank()) ? "USER" : rol.trim().toUpperCase();
+        return List.of(new SimpleGrantedAuthority(rolEfectivo));
     }
 
     // Si el trabajador esta dado de baja (activo=false) no puede entrar
