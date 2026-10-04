@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,16 +21,18 @@ public class Maquinaria {
     private String marca;
     private String modelo;
     private String numeroSerie;
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoMaquinaria tipo;
     private LocalDate fechaCompra;
     private BigDecimal precioCompra;
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoMaquinaria estado;
     private Boolean activo;
     private BigDecimal rentabilidad;
     private LocalDate ultimaRevision;
     private String observaciones;
 
-    // --- Getters y setters ---
+   
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -44,8 +48,8 @@ public class Maquinaria {
     public String getNumeroSerie() { return numeroSerie; }
     public void setNumeroSerie(String numeroSerie) { this.numeroSerie = numeroSerie; }
 
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public TipoMaquinaria getTipo() { return tipo; }
+    public void setTipo(TipoMaquinaria tipo) { this.tipo = tipo; }
 
     public LocalDate getFechaCompra() { return fechaCompra; }
     public void setFechaCompra(LocalDate fechaCompra) { this.fechaCompra = fechaCompra; }
@@ -53,8 +57,8 @@ public class Maquinaria {
     public BigDecimal getPrecioCompra() { return precioCompra; }
     public void setPrecioCompra(BigDecimal precioCompra) { this.precioCompra = precioCompra; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoMaquinaria getEstado() { return estado; }
+    public void setEstado(EstadoMaquinaria estado) { this.estado = estado; }
 
     public Boolean getActivo() { return activo; }
     public void setActivo(Boolean activo) { this.activo = activo; }

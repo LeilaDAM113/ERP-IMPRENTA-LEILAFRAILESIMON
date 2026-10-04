@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -63,47 +65,47 @@ public class Trabajador implements UserDetails {
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
-    // Texto libre (ADMIN, COMERCIAL, ENCARGADO_TALLER, OPERARIO, TRANSPORTISTA...),
-    // siguiendo la norma del proyecto de no usar tablas de catalogo para esto.
+    // Conjunto FIJO de roles (ver RolTrabajador): antes era String libre,
+    // ahora es un enum de Java mapeado como texto (EnumType.STRING), asi que
+    // la columna en MySQL sigue siendo VARCHAR pero Java ya no deja guardar
+    // un valor que no sea uno de los cinco roles + USER por defecto.
     // Se usa en getAuthorities() para decidir los permisos de Spring Security.
-    // Igual que la contrasena, nunca debe quedar null en la base de datos:
-    // TrabajadorService le pone "USER" por defecto si no llega ninguno, y
-    // nullable = false es la red de seguridad por si algo se saltara esa logica.
     @Column(nullable = false)
-    private String rol;
+    @Enumerated(EnumType.STRING)
+    private RolTrabajador rol;
 
     public Integer getId() { return id; }
-public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
-public String getNombreCompleto() { return nombreCompleto; }
-public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+    public String getNombreCompleto() { return nombreCompleto; }
+    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
 
-public String getDni() { return dni; }
-public void setDni(String dni) { this.dni = dni; }
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
 
-public String getTelefono() { return telefono; }
-public void setTelefono(String telefono) { this.telefono = telefono; }
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
 
-public String getEmail() { return email; }
-public void setEmail(String email) { this.email = email; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-public String getPassword() { return password; }
-public void setPassword(String password) { this.password = password; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-public Puesto getPuesto() { return puesto; }
-public void setPuesto(Puesto puesto) { this.puesto = puesto; }
+    public Puesto getPuesto() { return puesto; }
+    public void setPuesto(Puesto puesto) { this.puesto = puesto; }
 
-public BigDecimal getSalario() { return salario; }
-public void setSalario(BigDecimal salario) { this.salario = salario; }
+    public BigDecimal getSalario() { return salario; }
+    public void setSalario(BigDecimal salario) { this.salario = salario; }
 
-public LocalDate getFechaAlta() { return fechaAlta; }
-public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
+    public LocalDate getFechaAlta() { return fechaAlta; }
+    public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
 
-public Boolean getActivo() { return activo; }
-public void setActivo(Boolean activo) { this.activo = activo; }
+    public Boolean getActivo() { return activo; }
+    public void setActivo(Boolean activo) { this.activo = activo; }
 
-public String getRol() { return rol; }
-public void setRol(String rol) { this.rol = rol; }
+    public RolTrabajador getRol() { return rol; }
+    public void setRol(RolTrabajador rol) { this.rol = rol; }
 
     // --- Metodos que exige UserDetails (Spring Security) ---
 
@@ -113,18 +115,18 @@ public void setRol(String rol) { this.rol = rol; }
         return email;
     }
 
-    // Permisos/roles del usuario, a partir del campo "rol" (texto libre).
-    // Aqui NO se anade el prefijo "ROLE_": la autoridad viaja tal cual esta en
-    // la base de datos (ADMIN, COMERCIAL...). Por eso en los controladores se
+    // Permisos/roles del usuario, a partir del campo "rol". Aqui NO se anade
+    // el prefijo "ROLE_": la autoridad viaja tal cual el nombre de la
+    // constante (ADMIN, COMERCIAL...). Por eso en los controladores se
     // comprueba con @PreAuthorize("hasAuthority('ADMIN')") y NO con hasRole(),
     // que si esperaria el prefijo "ROLE_" por delante.
     // Si el trabajador no tiene rol asignado (dato viejo, o alguien se olvido
-    // de ponerlo) le damos el rol basico "USER" para que al menos pueda
-    // entrar, aunque sin permisos de ADMIN.
+    // de ponerlo) le damos el rol basico USER para que al menos pueda entrar,
+    // aunque sin permisos de ADMIN.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String rolEfectivo = (rol == null || rol.isBlank()) ? "USER" : rol.trim().toUpperCase();
-        return List.of(new SimpleGrantedAuthority(rolEfectivo));
+        RolTrabajador rolEfectivo = rol == null ? RolTrabajador.USER : rol;
+        return List.of(new SimpleGrantedAuthority(rolEfectivo.name()));
     }
 
     // Si el trabajador esta dado de baja (activo=false) no puede entrar

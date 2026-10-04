@@ -68,4 +68,5 @@ public class TrabajadorController {
     public void eliminar(@PathVariable Integer id) {
         servicio.eliminar(id);
     }
+    
 }

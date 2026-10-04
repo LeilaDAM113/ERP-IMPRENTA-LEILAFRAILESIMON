@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,14 +15,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "pedido")
+@Table(name = "pedido")
 public class Pedido {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private BigDecimal importe;
     private String descripcion;
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoPedido estado;
     @ManyToOne
     @JoinColumn(name = "id_inventario")
     private Inventario inventario;
@@ -30,8 +33,6 @@ public class Pedido {
     private Proveedor proveedor;
     private Integer cantidad;
 
-
-    // --- Getters y setters ---
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -41,8 +42,8 @@ public class Pedido {
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoPedido getEstado() { return estado; }
+    public void setEstado(EstadoPedido estado) { this.estado = estado; }
 
     public Inventario getInventario() { return inventario; }
     public void setInventario(Inventario inventario) { this.inventario = inventario; }

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,11 +25,13 @@ public class Factura {
     private OrdenTrabajo ordenTrabajo;
     private LocalDate fechaEmision;
     private LocalDate fechaPago;
-    private String metodoPago;
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private MetodoPago metodoPago;
+    @Enumerated(EnumType.STRING)
+    private EstadoFactura estado;
     private BigDecimal total;
 
-    // --- Getters y setters ---
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -43,11 +47,11 @@ public class Factura {
     public LocalDate getFechaPago() { return fechaPago; }
     public void setFechaPago(LocalDate fechaPago) { this.fechaPago = fechaPago; }
 
-    public String getMetodoPago() { return metodoPago; }
-    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    public MetodoPago getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(MetodoPago metodoPago) { this.metodoPago = metodoPago; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoFactura getEstado() { return estado; }
+    public void setEstado(EstadoFactura estado) { this.estado = estado; }
 
     public BigDecimal getTotal() { return total; }
     public void setTotal(BigDecimal total) { this.total = total; }

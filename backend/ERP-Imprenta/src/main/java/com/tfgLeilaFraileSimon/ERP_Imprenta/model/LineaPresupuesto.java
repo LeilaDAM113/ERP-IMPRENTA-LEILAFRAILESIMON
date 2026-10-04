@@ -26,4 +26,27 @@ public class LineaPresupuesto {
     private Integer cantidad;
     private BigDecimal subtotal;
     private BigDecimal total;
+
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public Presupuesto getPresupuesto() { return presupuesto; }
+    public void setPresupuesto(Presupuesto presupuesto) { this.presupuesto = presupuesto; }
+
+    public Catalogo getProducto() { return producto; }
+    public void setProducto(Catalogo producto) { this.producto = producto; }
+
+    public BigDecimal getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(BigDecimal precioUnitario) { this.precioUnitario = precioUnitario; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
+    public BigDecimal getSubtotal() { return subtotal; }
+    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
+
+    public BigDecimal getTotal() { return total; }
+    public void setTotal(BigDecimal total) { this.total = total; }
+
 }

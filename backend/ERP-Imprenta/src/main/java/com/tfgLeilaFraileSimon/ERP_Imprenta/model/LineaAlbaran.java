@@ -21,4 +21,18 @@ public class LineaAlbaran {
     @JoinColumn(name = "id_producto")
     private Catalogo producto;
     private Integer cantidad;
+
+   
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public Albaran getAlbaran() { return albaran; }
+    public void setAlbaran(Albaran albaran) { this.albaran = albaran; }
+
+    public Catalogo getProducto() { return producto; }
+    public void setProducto(Catalogo producto) { this.producto = producto; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
 }
