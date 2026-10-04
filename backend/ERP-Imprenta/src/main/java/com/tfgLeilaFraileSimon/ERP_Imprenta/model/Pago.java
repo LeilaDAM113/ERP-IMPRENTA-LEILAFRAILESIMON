@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,9 +25,11 @@ public class Pago {
     private String descripcion;
     private LocalDate fechaEmision;
     private LocalDate fechaPago;
-    private String metodoPago;
+    @Enumerated(EnumType.STRING)
+    private MetodoPago metodoPago;
     private BigDecimal importe;
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private EstadoPago estado;
     @ManyToOne
     @JoinColumn(name = "id_orden_trabajo")
     private OrdenTrabajo ordenTrabajo;
@@ -36,7 +40,7 @@ public class Pago {
     @JoinColumn(name = "id_inventario")
     private Inventario inventario;
 
-    // --- Getters y setters ---
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -52,14 +56,14 @@ public class Pago {
     public LocalDate getFechaPago() { return fechaPago; }
     public void setFechaPago(LocalDate fechaPago) { this.fechaPago = fechaPago; }
 
-    public String getMetodoPago() { return metodoPago; }
-    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    public MetodoPago getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(MetodoPago metodoPago) { this.metodoPago = metodoPago; }
 
     public BigDecimal getImporte() { return importe; }
     public void setImporte(BigDecimal importe) { this.importe = importe; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoPago getEstado() { return estado; }
+    public void setEstado(EstadoPago estado) { this.estado = estado; }
 
     public OrdenTrabajo getOrdenTrabajo() { return ordenTrabajo; }
     public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) { this.ordenTrabajo = ordenTrabajo; }

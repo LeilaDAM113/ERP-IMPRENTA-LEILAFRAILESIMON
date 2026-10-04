@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
@@ -24,11 +25,8 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
  */
 @Service
 public class TrabajadorService implements UserDetailsService {
-    // Rol que se asigna cuando no llega ninguno: nunca debe quedar el campo
-    // rol sin valor (ver Trabajador.rol, nullable = false).
-    private static final String ROL_POR_DEFECTO = "USER";
-
     private final TrabajadorRepository repositorio;
+    //inyección de dependencias
     private final PasswordEncoder passwordEncoder;
     private final LoginAttemptService loginAttemptService;
 
@@ -71,7 +69,7 @@ public class TrabajadorService implements UserDetailsService {
                     "La contrasena es obligatoria al crear un trabajador");
         }
         trabajador.setPassword(passwordEncoder.encode(trabajador.getPassword()));
-        trabajador.setRol(normalizarRol(trabajador.getRol()));
+        trabajador.setRol(rolConDefecto(trabajador.getRol()));
         return repositorio.save(trabajador);
     }
 
@@ -80,6 +78,7 @@ public class TrabajadorService implements UserDetailsService {
     // objeto recibido tal cual, y si el JSON no traia algun campo (por ejemplo
     // "rol" o "activo") se quedaba a null en la base de datos sin querer.
     public Trabajador actualizar(Integer id, Trabajador datosNuevos) {
+        //orElseThrow es como if else y sino lanza excep
         Trabajador existente = repositorio.findById(id).orElseThrow();
 
         existente.setNombreCompleto(datosNuevos.getNombreCompleto());
@@ -91,10 +90,10 @@ public class TrabajadorService implements UserDetailsService {
         existente.setFechaAlta(datosNuevos.getFechaAlta());
         existente.setActivo(datosNuevos.getActivo());
 
-        // Si no mandan rol nuevo (viene vacio o no viene), se conserva el que
-        // ya tenia -> nunca se queda sin rol. Si mandan uno, se normaliza.
-        if (datosNuevos.getRol() != null && !datosNuevos.getRol().isBlank()) {
-            existente.setRol(normalizarRol(datosNuevos.getRol()));
+        // Si no mandan rol nuevo (no viene en el JSON), se conserva el que ya
+        // tenia -> nunca se queda sin rol.
+        if (datosNuevos.getRol() != null) {
+            existente.setRol(datosNuevos.getRol());
         }
 
         // Si no mandan contrasena nueva (viene vacia o no viene), se conserva
@@ -110,10 +109,9 @@ public class TrabajadorService implements UserDetailsService {
         repositorio.deleteById(id);
     }
 
-    // Quita espacios sobrantes y pasa a mayusculas; si no hay nada, usa el rol
-    // por defecto. Asi el rol que queda guardado en la base de datos ya esta
-    // "limpio" (ADMIN, no " admin ") y nunca es null.
-    private String normalizarRol(String rol) {
-        return (rol == null || rol.isBlank()) ? ROL_POR_DEFECTO : rol.trim().toUpperCase();
+    // Si no llega ningun rol se usa USER por defecto: el campo nunca debe
+    // quedar sin valor (ver Trabajador.rol, nullable = false).
+    private RolTrabajador rolConDefecto(RolTrabajador rol) {
+        return rol == null ? RolTrabajador.USER : rol;
     }
 }

@@ -20,4 +20,14 @@ public class OrdenEmpleado {
     @ManyToOne
     @JoinColumn(name = "id_trabajador")
     private Trabajador trabajador;
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public OrdenTrabajo getOrdenTrabajo() { return ordenTrabajo; }
+    public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) { this.ordenTrabajo = ordenTrabajo; }
+
+    public Trabajador getTrabajador() { return trabajador; }
+    public void setTrabajador(Trabajador trabajador) { this.trabajador = trabajador; }
+
 }

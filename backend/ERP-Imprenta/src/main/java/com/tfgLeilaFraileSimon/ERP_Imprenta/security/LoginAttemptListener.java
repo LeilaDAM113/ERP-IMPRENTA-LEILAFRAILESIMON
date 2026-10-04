@@ -23,6 +23,7 @@ public class LoginAttemptListener {
     }
 
     // Login fallido por contrasena incorrecta -> sumamos un fallo a ese email
+    // qué es un eventlistener y como funciona
     @EventListener
     public void alFallarLogin(AuthenticationFailureBadCredentialsEvent evento) {
         String email = evento.getAuthentication().getName();

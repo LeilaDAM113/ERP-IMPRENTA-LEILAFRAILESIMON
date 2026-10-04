@@ -24,4 +24,20 @@ public class OrdenTrabajador {
     private Trabajador trabajador;
     private BigDecimal horasReales;
     private String observaciones;
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public OrdenTrabajo getOrdenTrabajo() { return ordenTrabajo; }
+    public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) { this.ordenTrabajo = ordenTrabajo; }
+
+    public Trabajador getTrabajador() { return trabajador; }
+    public void setTrabajador(Trabajador trabajador) { this.trabajador = trabajador; }
+
+    public BigDecimal getHorasReales() { return horasReales; }
+    public void setHorasReales(BigDecimal horasReales) { this.horasReales = horasReales; }
+
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+
 }

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Imprenta</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <!-- ===== VISTA LOGIN ===== -->
+    <!-- Se ve al entrar y siempre que no haya credenciales validas guardadas -->
+    <section id="vista-login" class="pantalla-centrada">
+        <form id="form-login" class="tarjeta">
+            <div class="marca-login">
+                <div class="logo">EI</div>
+                <span>ERP Imprenta</span>
+            </div>
+            <p class="subtitulo">Inicia sesion con tu cuenta de trabajador</p>
+
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required autocomplete="username">
+            <p id="error-login-email" class="campo-error-mensaje" hidden></p>
+
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" required autocomplete="current-password">
+            <p id="error-login-password" class="campo-error-mensaje" hidden></p>
+
+            <button type="submit" class="boton-primario">Entrar</button>
+
+            <p id="login-error" class="mensaje-error" hidden></p>
+        </form>
+    </section>
+
+    <!-- ===== VISTA APLICACION (tras iniciar sesion) ===== -->
+    <div id="vista-app" hidden>
+        <div class="disposicion">
+
+            <!-- Barra lateral: un boton por modulo, agrupados por area del negocio.
+                 Cada boton lleva data-seccion=<clave>; alSeleccionarSeccion() en
+                 app.js decide si es el panel, la vista especial de trabajadores,
+                 o una pantalla generica (ver js/crud.js) segun esa clave. -->
+            <aside class="barra-lateral">
+                <div class="marca">
+                    <div class="logo">EI</div>
+                    <span>ERP Imprenta</span>
+                </div>
+                <nav class="navegacion" id="navegacion"></nav>
+            </aside>
+
+            <div class="zona-principal">
+                <header class="cabecera">
+                    <h1 id="titulo-seccion">Panel</h1>
+                    <div class="usuario-actual">
+                        <span id="usuario-nombre"></span>
+                        <span id="usuario-rol" class="chip-rol"></span>
+                        <button id="btn-logout" class="boton-secundario">Cerrar sesion</button>
+                    </div>
+                </header>
+
+                <main class="contenido">
+
+                    <!-- ===== Panel / Dashboard ===== -->
+                    <section id="vista-dashboard">
+                        <div class="bienvenida">
+                            <h2>Bienvenida, <span id="dashboard-nombre"></span></h2>
+                            <p>Resumen rapido de la actividad de la imprenta.</p>
+                        </div>
+                        <div class="grid-estadisticas" id="dashboard-estadisticas">
+                            <p class="texto-cargando">Cargando datos...</p>
+                        </div>
+                        <h2 style="margin-bottom: 0.75rem;">Accesos rapidos</h2>
+                        <div class="grid-accesos" id="dashboard-accesos"></div>
+                    </section>
+
+                    <!-- ===== Trabajadores (pantalla propia: login, roles y contrasena
+                         necesitan logica especial que no encaja en el motor generico) ===== -->
+                    <section id="vista-trabajadores" hidden>
+                        <div class="tarjeta">
+                            <div class="cabecera-seccion">
+                                <h2>Trabajadores</h2>
+                                <!-- Solo se muestra si el rol de quien ha entrado es ADMIN -->
+                                <button id="btn-mostrar-alta" class="boton-primario" hidden>+ Nuevo trabajador</button>
+                            </div>
+
+                            <p id="trabajadores-error" class="mensaje-error" hidden></p>
+                            <p id="trabajadores-cargando">Cargando...</p>
+
+                            <div class="contenedor-tabla">
+                                <table id="tabla-trabajadores" hidden>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Email</th>
+                                            <th>Rol</th>
+                                            <th>Activo</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cuerpo-tabla-trabajadores"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de alta: solo se ensena a un ADMIN, ver app.js -->
+                        <section id="tarjeta-alta" class="tarjeta" hidden>
+                            <h2>Nuevo trabajador</h2>
+                            <form id="form-alta">
+                                <div class="rejilla-formulario">
+                                    <div>
+                                        <label for="alta-nombre">Nombre completo</label>
+                                        <input type="text" id="alta-nombre" required>
+                                        <p id="error-alta-nombre" class="campo-error-mensaje" hidden></p>
+                                    </div>
+                                    <div>
+                                        <label for="alta-email">Email</label>
+                                        <input type="email" id="alta-email" required>
+                                        <p id="error-alta-email" class="campo-error-mensaje" hidden></p>
+                                    </div>
+                                    <div>
+                                        <label for="alta-password">Contraseña</label>
+                                        <input type="password" id="alta-password" required minlength="8">
+                                        <p id="error-alta-password" class="campo-error-mensaje" hidden></p>
+                                    </div>
+                                    <div>
+                                        <label for="alta-rol">Rol</label>
+                                        <select id="alta-rol">
+                                            <option value="ADMIN">ADMIN</option>
+                                            <option value="COMERCIAL">COMERCIAL</option>
+                                            <option value="ENCARGADO_TALLER">ENCARGADO_TALLER</option>
+                                            <option value="OPERARIO" selected>OPERARIO</option>
+                                            <option value="TRANSPORTISTA">TRANSPORTISTA</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="acciones-formulario">
+                                    <button type="submit" class="boton-primario">Crear</button>
+                                    <button type="button" id="btn-cancelar-alta" class="boton-secundario">Cancelar</button>
+                                </div>
+
+                                <p id="alta-error" class="mensaje-error" hidden></p>
+                            </form>
+                        </section>
+                    </section>
+
+                    <!-- ===== Vista generica: la usan las otras 20 entidades (ver js/crud.js) ===== -->
+                    <section id="vista-generica" hidden>
+                        <div class="tarjeta">
+                            <div class="cabecera-seccion">
+                                <div>
+                                    <h2 id="generica-titulo"></h2>
+                                    <p id="generica-subtitulo"></p>
+                                </div>
+                                <button id="generica-btn-nuevo" class="boton-primario">+ Nuevo</button>
+                            </div>
+
+                            <p id="generica-error" class="mensaje-error" hidden></p>
+                            <p id="generica-cargando" class="texto-cargando">Cargando...</p>
+                            <p id="generica-vacio" class="mensaje-vacio" hidden>Todavia no hay registros.</p>
+
+                            <div class="contenedor-tabla">
+                                <table id="generica-tabla" hidden>
+                                    <thead id="generica-thead"></thead>
+                                    <tbody id="generica-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <section id="generica-tarjeta-formulario" class="tarjeta" hidden>
+                            <h2 id="generica-form-titulo"></h2>
+                            <form id="generica-form">
+                                <div class="rejilla-formulario" id="generica-form-campos"></div>
+                                <div class="acciones-formulario">
+                                    <button type="submit" class="boton-primario" id="generica-form-guardar">Crear</button>
+                                    <button type="button" id="generica-form-cancelar" class="boton-secundario">Cancelar</button>
+                                </div>
+                                <p id="generica-form-error" class="mensaje-error" hidden></p>
+                            </form>
+                        </section>
+                    </section>
+
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/validacion.js"></script>
+    <script src="js/crud.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

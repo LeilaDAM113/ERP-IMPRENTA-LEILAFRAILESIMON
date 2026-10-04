@@ -29,7 +29,6 @@ public class Inventario {
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
-    // --- Getters y setters ---
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 

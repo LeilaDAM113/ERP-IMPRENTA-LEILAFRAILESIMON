@@ -3,6 +3,8 @@ package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,10 +29,11 @@ public class OrdenTrabajo {
     private Trabajador trabajador;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private String prioridad;
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private PrioridadOrden prioridad;
+    @Enumerated(EnumType.STRING)
+    private EstadoOrdenTrabajo estado;
 
-    // --- Getters y setters ---
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -55,10 +58,10 @@ public class OrdenTrabajo {
     public LocalDate getFechaFin() { return fechaFin; }
     public void setFechaFin(LocalDate fechaFin) { this.fechaFin = fechaFin; }
 
-    public String getPrioridad() { return prioridad; }
-    public void setPrioridad(String prioridad) { this.prioridad = prioridad; }
+    public PrioridadOrden getPrioridad() { return prioridad; }
+    public void setPrioridad(PrioridadOrden prioridad) { this.prioridad = prioridad; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public EstadoOrdenTrabajo getEstado() { return estado; }
+    public void setEstado(EstadoOrdenTrabajo estado) { this.estado = estado; }
 
 }

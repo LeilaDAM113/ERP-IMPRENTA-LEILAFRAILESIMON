@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 
@@ -53,7 +54,7 @@ public class AdminInicialRunner implements CommandLineRunner {
         admin.setNombreCompleto("Administrador");
         admin.setEmail(emailAdmin);
         admin.setPassword(passwordEncoder.encode(passwordAdmin));
-        admin.setRol("ADMIN");
+        admin.setRol(RolTrabajador.ADMIN);
         admin.setActivo(true);
         admin.setFechaAlta(LocalDate.now());
         repositorio.save(admin);

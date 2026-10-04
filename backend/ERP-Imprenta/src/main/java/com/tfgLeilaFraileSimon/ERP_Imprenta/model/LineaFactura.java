@@ -27,4 +27,23 @@ public class LineaFactura {
     @JoinColumn(name = "id_linea_presupuesto")
     private LineaPresupuesto lineaPresupuesto;
     private Integer cantidad;
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public Factura getFactura() { return factura; }
+    public void setFactura(Factura factura) { this.factura = factura; }
+
+    public Catalogo getProducto() { return producto; }
+    public void setProducto(Catalogo producto) { this.producto = producto; }
+
+    public LineaAlbaran getLineaAlbaran() { return lineaAlbaran; }
+    public void setLineaAlbaran(LineaAlbaran lineaAlbaran) { this.lineaAlbaran = lineaAlbaran; }
+
+    public LineaPresupuesto getLineaPresupuesto() { return lineaPresupuesto; }
+    public void setLineaPresupuesto(LineaPresupuesto lineaPresupuesto) { this.lineaPresupuesto = lineaPresupuesto; }
+
+    public Integer getCantidad() { return cantidad; }
+    public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+
 }
