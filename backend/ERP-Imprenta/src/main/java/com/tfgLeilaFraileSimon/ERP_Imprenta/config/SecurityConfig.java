@@ -80,43 +80,20 @@ public class SecurityConfig {
     //  - httpBasic -> se entra mandando email y contrasena (autenticacion basica)
     //  - requiresChannel (solo si exigirHttps=true) -> rechaza el trafico que
     //    no vaya por HTTPS; en local se deja apagado para poder probar.
-            @Bean
+    @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-            AuthenticationEntryPoint respuestaNoAutorizada =
-                    (request, response, exception) -> {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(
-                                "{\"message\":\"Email o contraseña incorrectos\"}"
-                        );
-                    };
+          http.csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+            .anyRequest().permitAll()
+        );
 
-            http.csrf(AbstractHttpConfigurer::disable).sessionManagement(session ->
-                            session.sessionCreationPolicy(
-                                    SessionCreationPolicy.STATELESS
-                            )
-                        ).authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/api/**").authenticated()
-                            .anyRequest().permitAll()
-                        ).exceptionHandling(exceptions ->
-                            exceptions.authenticationEntryPoint(
-                                    respuestaNoAutorizada
-                            )
-                    ).httpBasic(basic ->
-                            basic.authenticationEntryPoint(
-                                    respuestaNoAutorizada
-                            )
-                    );
+    if (exigirHttps) {
+        http.requiresChannel(canal -> canal.anyRequest().requiresSecure());
+    }
 
-            if (exigirHttps) {
-                http.requiresChannel(canal ->
-                        canal.anyRequest().requiresSecure()
-                );
-            }
-
-            return http.build();
+    return http.build();
         }
-        
-        }
+    }
