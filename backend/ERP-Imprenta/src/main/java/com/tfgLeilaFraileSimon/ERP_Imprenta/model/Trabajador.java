@@ -22,9 +22,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 // Trabajador ES ADEMAS el usuario del sistema: implementa UserDetails para que
 // Spring Security pueda autenticarlo directamente (login por email + password).
@@ -39,25 +36,20 @@ public class Trabajador implements UserDetails {
     private String telefono;
     // unique = true evita que dos trabajadores compartan email: el login busca
     // por email esperando encontrar como mucho UNO, y si hubiera repetidos
-    // fallaria de forma rara. @NotBlank/@Email comprueban el formato al recibir
-    // el JSON (necesita @Valid en el controlador para activarse).
+    // fallaria de forma rara. El formato del email se valida al recibir el
+    // JSON, en los DTOs (TrabajadorCrearRequest / TrabajadorActualizarRequest).
     @Column(unique = true)
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El email no tiene un formato valido")
     private String email;
-    // WRITE_ONLY: se puede ENVIAR (al crear/actualizar) pero NUNCA se devuelve en las respuestas JSON.
-    // Distincion importante:
-    //  - En la PETICION (JSON) SI puede venir vacia al actualizar -> se
-    //    interpreta como "no cambies la contrasena" en TrabajadorService.
-    //    Por eso @Size no lleva @NotBlank: admite null en el JSON de entrada.
-    //  - En la BASE DE DATOS nunca debe quedar guardada como null. Eso lo
-    //    garantiza TrabajadorService (obliga a mandarla al crear, y al
-    //    actualizar conserva la que ya habia si no llega una nueva) y,
-    //    como ultima red de seguridad, nullable = false: si por lo que sea
-    //    se intentara guardar sin contrasena, la base de datos lo rechaza.
+    // Aqui se guarda SIEMPRE cifrada (BCrypt). Las reglas de entrada
+    // (obligatoria al crear, opcional al actualizar, minimo 8 caracteres)
+    // estan en los DTOs y en TrabajadorService. nullable = false es la ultima
+    // red de seguridad: la base de datos rechaza un trabajador sin contrasena.
+    // WRITE_ONLY: /api/trabajador ya devuelve TrabajadorResponse (sin
+    // contrasena), pero otras entidades (OrdenTrabajo, OrdenTrabajador...)
+    // siguen devolviendo el Trabajador anidado en su JSON, y ahi el hash no
+    // debe salir nunca.
     @Column(nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
-    @Size(min = 8, message = "La contrasena debe tener al menos 8 caracteres")
     private String password;
     @ManyToOne
     @JoinColumn(name = "id_puesto")

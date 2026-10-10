@@ -1,7 +1,8 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.service;
 
 import java.util.List;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.TrabajadorActualizarRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.TrabajadorCrearRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Puesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.PuestoRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
 
@@ -26,13 +31,15 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
 @Service
 public class TrabajadorService implements UserDetailsService {
     private final TrabajadorRepository repositorio;
+    private final PuestoRepository puestoRepositorio;
     //inyección de dependencias
     private final PasswordEncoder passwordEncoder;
     private final LoginAttemptService loginAttemptService;
 
-    public TrabajadorService(TrabajadorRepository repositorio, PasswordEncoder passwordEncoder,
-            LoginAttemptService loginAttemptService) {
+    public TrabajadorService(TrabajadorRepository repositorio, PuestoRepository puestoRepositorio,
+            PasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService) {
         this.repositorio = repositorio;
+        this.puestoRepositorio = puestoRepositorio;
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptService = loginAttemptService;
     }
@@ -51,25 +58,32 @@ public class TrabajadorService implements UserDetailsService {
     }
 
     // --- CRUD ---
-    public List<Trabajador> listar() {
-        return repositorio.findAll();
+    public Page<Trabajador> listar(Pageable paginacion) {
+         return repositorio.findAll(paginacion);
     }
 
     public Trabajador obtener(Integer id) {
         return repositorio.findById(id).orElseThrow();
     }
 
-    // AÑADIR: la contrasena es obligatoria al crear un trabajador nuevo (no
-    // tiene ninguna contrasena previa que conservar) y se cifra antes de guardar.
-    // Si no llega rol, se pone el rol por defecto: nunca se guarda un
-    // trabajador con el rol sin asignar.
-    public Trabajador guardar(Trabajador trabajador) {
-        if (trabajador.getPassword() == null || trabajador.getPassword().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "La contrasena es obligatoria al crear un trabajador");
-        }
-        trabajador.setPassword(passwordEncoder.encode(trabajador.getPassword()));
-        trabajador.setRol(rolConDefecto(trabajador.getRol()));
+    // AÑADIR: se construye un Trabajador NUEVO a partir del DTO. Como el DTO
+    // no tiene id, el trabajador siempre llega a save() con id null y la base
+    // de datos le asigna uno: es imposible pisar a otro trabajador existente.
+    // La contrasena ya viene validada como obligatoria (@NotBlank en el DTO)
+    // y aqui se cifra antes de guardar. Si no llega rol, se pone el rol por
+    // defecto: nunca se guarda un trabajador con el rol sin asignar.
+    public Trabajador guardar(TrabajadorCrearRequest datos) {
+        Trabajador trabajador = new Trabajador();
+        trabajador.setNombreCompleto(datos.nombreCompleto());
+        trabajador.setDni(datos.dni());
+        trabajador.setTelefono(datos.telefono());
+        trabajador.setEmail(datos.email());
+        trabajador.setPassword(passwordEncoder.encode(datos.password()));
+        trabajador.setPuesto(buscarPuesto(datos.idPuesto()));
+        trabajador.setSalario(datos.salario());
+        trabajador.setFechaAlta(datos.fechaAlta());
+        trabajador.setActivo(datos.activo());
+        trabajador.setRol(rolConDefecto(datos.rol()));
         return repositorio.save(trabajador);
     }
 
@@ -77,29 +91,29 @@ public class TrabajadorService implements UserDetailsService {
     // solo pisamos los campos que llegan en la peticion. Antes se guardaba el
     // objeto recibido tal cual, y si el JSON no traia algun campo (por ejemplo
     // "rol" o "activo") se quedaba a null en la base de datos sin querer.
-    public Trabajador actualizar(Integer id, Trabajador datosNuevos) {
+    public Trabajador actualizar(Integer id, TrabajadorActualizarRequest datos) {
         //orElseThrow es como if else y sino lanza excep
         Trabajador existente = repositorio.findById(id).orElseThrow();
 
-        existente.setNombreCompleto(datosNuevos.getNombreCompleto());
-        existente.setDni(datosNuevos.getDni());
-        existente.setTelefono(datosNuevos.getTelefono());
-        existente.setEmail(datosNuevos.getEmail());
-        existente.setPuesto(datosNuevos.getPuesto());
-        existente.setSalario(datosNuevos.getSalario());
-        existente.setFechaAlta(datosNuevos.getFechaAlta());
-        existente.setActivo(datosNuevos.getActivo());
+        existente.setNombreCompleto(datos.nombreCompleto());
+        existente.setDni(datos.dni());
+        existente.setTelefono(datos.telefono());
+        existente.setEmail(datos.email());
+        existente.setPuesto(buscarPuesto(datos.idPuesto()));
+        existente.setSalario(datos.salario());
+        existente.setFechaAlta(datos.fechaAlta());
+        existente.setActivo(datos.activo());
 
         // Si no mandan rol nuevo (no viene en el JSON), se conserva el que ya
         // tenia -> nunca se queda sin rol.
-        if (datosNuevos.getRol() != null) {
-            existente.setRol(datosNuevos.getRol());
+        if (datos.rol() != null) {
+            existente.setRol(datos.rol());
         }
 
         // Si no mandan contrasena nueva (viene vacia o no viene), se conserva
         // la que ya tenia cifrada; si mandan una nueva, se cifra y se cambia.
-        if (datosNuevos.getPassword() != null && !datosNuevos.getPassword().isBlank()) {
-            existente.setPassword(passwordEncoder.encode(datosNuevos.getPassword()));
+        if (datos.password() != null && !datos.password().isBlank()) {
+            existente.setPassword(passwordEncoder.encode(datos.password()));
         }
 
         return repositorio.save(existente);
@@ -113,5 +127,16 @@ public class TrabajadorService implements UserDetailsService {
     // quedar sin valor (ver Trabajador.rol, nullable = false).
     private RolTrabajador rolConDefecto(RolTrabajador rol) {
         return rol == null ? RolTrabajador.USER : rol;
+    }
+
+    // El DTO trae solo el id del puesto: aqui se busca el Puesto de verdad.
+    // Sin id -> trabajador sin puesto. Id que no existe -> error 400.
+    private Puesto buscarPuesto(Integer idPuesto) {
+        if (idPuesto == null) {
+            return null;
+        }
+        return puestoRepositorio.findById(idPuesto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No existe un puesto con id " + idPuesto));
     }
 }

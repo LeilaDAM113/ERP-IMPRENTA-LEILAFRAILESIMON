@@ -1,6 +1,5 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-/
 public enum RolTrabajador {
     ADMIN,
     COMERCIAL,
