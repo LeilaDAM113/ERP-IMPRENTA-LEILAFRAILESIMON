@@ -78,20 +78,20 @@ public class TrabajadorController {
     }
 
     @PostMapping
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public TrabajadorResponse anadir(@Valid @RequestBody TrabajadorCrearRequest datos) {
         return TrabajadorResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public TrabajadorResponse actualizar(@PathVariable Integer id,
             @Valid @RequestBody TrabajadorActualizarRequest datos) {
         return TrabajadorResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable Integer id) {
         servicio.eliminar(id);
     }

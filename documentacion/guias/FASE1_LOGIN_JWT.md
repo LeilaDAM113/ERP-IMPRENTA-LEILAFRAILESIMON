@@ -556,6 +556,27 @@ Abre **http://localhost:8080/swagger-ui.html**
 
 ---
 
+### Paso 12 bis — Que Swagger no mande el token al login
+
+**Problema:** si en **Authorize** hay un token inventado o caducado, Swagger lo manda **también** al hacer login, y el servidor responde *«Tienes que iniciar sesion»* en vez de *«Email o contraseña incorrectos»*. (El servidor rechaza cualquier petición con un token falso, aunque sea al login.)
+
+**Solución:** en `controller/AuthController.java`:
+
+1. Añade este import junto a los demás:
+   ```java
+   import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+   ```
+2. Pon `@SecurityRequirements` justo debajo de `@PostMapping("/auth/login")`:
+   ```java
+       @PostMapping("/auth/login")
+       @SecurityRequirements // en Swagger, el login no lleva token
+       public LoginResponse login(@Valid @RequestBody LoginRequest datos) {
+   ```
+
+Reinicia el servidor y recarga Swagger: verás que `POST /auth/login` ya **no tiene candado**, así que nunca manda token.
+
+---
+
 ## Paso 13 — Guarda el trabajo
 
 ```bash
