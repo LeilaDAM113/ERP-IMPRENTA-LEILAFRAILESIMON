@@ -61,7 +61,10 @@ public class TrabajadorService implements UserDetailsService {
     public Page<Trabajador> listar(Pageable paginacion) {
          return repositorio.findAll(paginacion);
     }
-
+    // Se usa en GET (/api/me)
+    public Trabajador obtenerPorEmail(String email) {
+        return repositorio.findByEmail(email).orElseThrow();
+    }
     public Trabajador obtener(Integer id) {
         return repositorio.findById(id).orElseThrow();
     }
