@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos para el estado de un pago
+// Estados que puede tener un pago
 public enum EstadoPago {
     PENDIENTE,
     COMPLETADO,

@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos para el estado de una maquina
+// Estados en los que puede estar una maquina
 public enum EstadoMaquinaria {
     OPERATIVA,
     EN_MANTENIMIENTO,

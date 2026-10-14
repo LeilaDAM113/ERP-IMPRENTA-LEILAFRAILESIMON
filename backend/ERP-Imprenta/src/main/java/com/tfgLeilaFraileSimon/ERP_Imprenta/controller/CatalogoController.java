@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Catalogo;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.CatalogoService;
 
-/*
- * API REST de Catalogo: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Catalogo: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/catalogo")
 public class CatalogoController {

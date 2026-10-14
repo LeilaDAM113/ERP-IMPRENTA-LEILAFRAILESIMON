@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaAlbaran;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.LineaAlbaranService;
 
-/*
- * API REST de LineaAlbaran: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de LineaAlbaran: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/linea-albaran")
 public class LineaAlbaranController {

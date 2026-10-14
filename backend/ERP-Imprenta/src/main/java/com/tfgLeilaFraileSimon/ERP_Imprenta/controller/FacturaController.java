@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Factura;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.FacturaService;
 
-/*
- * API REST de Factura: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Factura: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/factura")
 public class FacturaController {

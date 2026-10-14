@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos a partir de tipos habituales de maquina de imprenta
+// Tipos de maquina que puede haber en una imprenta
 public enum TipoMaquinaria {
     OFFSET,
     DIGITAL,

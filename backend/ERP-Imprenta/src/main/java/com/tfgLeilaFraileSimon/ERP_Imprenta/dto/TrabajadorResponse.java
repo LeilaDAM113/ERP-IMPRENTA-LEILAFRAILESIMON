@@ -7,17 +7,9 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Puesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 
-/*
- * Lo que la API DEVUELVE de un trabajador.
- *
- * Solo lleva los datos que interesan al cliente: ni la contrasena, ni los
- * campos que Trabajador tiene por implementar UserDetails (username,
- * authorities, enabled, accountNonExpired...), que son cosa interna de
- * Spring Security y antes se colaban en el JSON.
- *
- * El puesto se devuelve como objeto {id, nombre} para poder mostrar el nombre
- * sin otra peticion. Es null si el trabajador no tiene puesto asignado.
- */
+// Lo que devuelve la API de un trabajador.
+// No lleva la contraseña ni las cosas internas de Spring (username, enabled...).
+// El puesto va con su id y su nombre, o null si no tiene.
 public record TrabajadorResponse(
         Integer id,
         String nombreCompleto,

@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.OrdenTrabajo;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.OrdenTrabajoService;
 
-/*
- * API REST de OrdenTrabajo: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de OrdenTrabajo: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/orden-trabajo")
 public class OrdenTrabajoController {

@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos para el ciclo de vida de un pedido a proveedor
+// Estados que puede tener un pedido a un proveedor
 public enum EstadoPedido {
     PENDIENTE,
     ENVIADO,

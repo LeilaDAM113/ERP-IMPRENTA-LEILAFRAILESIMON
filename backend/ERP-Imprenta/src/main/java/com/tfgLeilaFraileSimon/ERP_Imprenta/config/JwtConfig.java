@@ -13,14 +13,10 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 
-/*
- * Configuracion de los tokens JWT.
- *  - JwtEncoder: FIRMA los tokens nuevos (se usa en el login).
- *  - JwtDecoder: COMPRUEBA los tokens que llegan en cada peticion
- *    (firma correcta y que no haya caducado). Spring lo usa solo.
- * Los dos usan la misma clave secreta (app.jwt.secreto, en local.properties)
- * con el algoritmo HS256.
- */
+// Configuracion de los tokens.
+// - jwtEncoder: crea y firma el token cuando alguien hace login
+// - jwtDecoder: comprueba en cada peticion que el token es bueno y no ha caducado
+// Los dos usan la clave secreta que tengo en local.properties.
 @Configuration
 public class JwtConfig {
 

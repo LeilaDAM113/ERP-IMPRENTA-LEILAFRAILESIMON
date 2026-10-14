@@ -13,19 +13,11 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 
-/*
- * Al proteger la creacion/edicion/borrado de trabajadores con
- * @PreAuthorize("hasRole('ADMIN')") (ver TrabajadorController) nos quedamos
- * sin forma de crear el PRIMER trabajador: hace falta ser ADMIN para dar de
- * alta a alguien, pero todavia no existe ningun ADMIN. Es el clasico problema
- * del huevo y la gallina.
- *
- * Este CommandLineRunner se ejecuta solo al arrancar la aplicacion y, UNICAMENTE
- * si la tabla trabajador esta vacia, crea un admin inicial con los datos de
- * app.admin-inicial.* (application.properties, o las variables de entorno
- * ADMIN_EMAIL / ADMIN_PASSWORD). Si ya hay algun trabajador en la base de
- * datos, no hace nada.
- */
+// Crea el primer administrador al arrancar la aplicacion.
+// Hace falta porque para dar de alta trabajadores hay que ser ADMIN,
+// y la primera vez todavia no hay ninguno.
+// Solo lo crea si la tabla de trabajadores esta vacia.
+// Su email y contraseña estan en application.properties (app.admin-inicial).
 @Component
 public class AdminInicialRunner implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(AdminInicialRunner.class);

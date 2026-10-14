@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Inventario;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.InventarioService;
 
-/*
- * API REST de Inventario: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Inventario: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/inventario")
 public class InventarioController {

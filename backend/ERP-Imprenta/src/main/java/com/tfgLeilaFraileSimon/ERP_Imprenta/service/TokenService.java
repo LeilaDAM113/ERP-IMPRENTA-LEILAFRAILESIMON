@@ -11,13 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 
-/*
- * Genera el token JWT de un trabajador que acaba de iniciar sesion.
- * Dentro del token van:
- *  - subject: el email (quien es)
- *  - rol: su rol (que puede hacer)
- *  - issuedAt / expiresAt: cuando se creo y cuando caduca
- */
+// Crea el token de un trabajador cuando hace login.
+// Dentro del token va su email, su rol, cuando se ha creado y cuando caduca.
 @Service
 public class TokenService {
     private final JwtEncoder encoder;

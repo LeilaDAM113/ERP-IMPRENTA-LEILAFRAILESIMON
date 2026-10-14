@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Proveedor;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.ProveedorService;
 
-/*
- * API REST de Proveedor: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Proveedor: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/proveedor")
 public class ProveedorController {
