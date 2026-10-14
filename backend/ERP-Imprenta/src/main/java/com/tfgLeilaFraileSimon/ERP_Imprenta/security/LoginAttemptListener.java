@@ -5,15 +5,9 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
-/*
- * ESCUCHA los eventos de login que publica Spring Security (gracias al bean
- * AuthenticationEventPublisher de SecurityConfig) y se los pasa a
- * LoginAttemptService para llevar la cuenta de fallos por email.
- *
- * No hace falta llamar a esta clase desde ningun sitio: Spring la detecta
- * sola por el @EventListener y la ejecuta cada vez que alguien intenta
- * iniciar sesion.
- */
+// Esta clase "escucha" los logins que hace Spring.
+// Cada vez que alguien inicia sesion (bien o mal) se ejecuta sola
+// y se lo cuenta a LoginAttemptService para llevar la cuenta de fallos.
 @Component
 public class LoginAttemptListener {
     private final LoginAttemptService loginAttemptService;
@@ -22,7 +16,7 @@ public class LoginAttemptListener {
         this.loginAttemptService = loginAttemptService;
     }
 
-    // Login fallido por contrasena incorrecta -> sumamos un fallo a ese email
+    // login fallido -> sumo un fallo a ese email
     // qué es un eventlistener y como funciona
     @EventListener
     public void alFallarLogin(AuthenticationFailureBadCredentialsEvent evento) {
@@ -30,7 +24,7 @@ public class LoginAttemptListener {
         loginAttemptService.registrarFallo(email);
     }
 
-    // Login correcto -> reseteamos el contador de fallos de ese email
+    // login correcto -> pongo sus fallos a 0
     @EventListener
     public void alAcertarLogin(AuthenticationSuccessEvent evento) {
         String email = evento.getAuthentication().getName();

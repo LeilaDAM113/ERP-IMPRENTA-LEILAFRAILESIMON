@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Pago;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PagoService;
 
-/*
- * API REST de Pago: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Pago: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/pago")
 public class PagoController {

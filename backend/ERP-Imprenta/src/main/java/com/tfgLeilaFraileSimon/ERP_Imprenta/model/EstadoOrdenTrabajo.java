@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos para el ciclo de vida de una orden de taller
+// Estados por los que pasa una orden de trabajo
 public enum EstadoOrdenTrabajo {
     PENDIENTE,
     EN_PROCESO,

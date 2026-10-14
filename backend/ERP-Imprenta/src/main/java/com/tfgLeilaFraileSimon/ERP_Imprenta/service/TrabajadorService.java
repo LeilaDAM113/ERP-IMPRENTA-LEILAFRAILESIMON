@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.service;
+import java.util.NoSuchElementException;
 
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,13 +21,10 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.PuestoRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
 
-/*
- * SERVICIO DE TRABAJADOR: hace DOS cosas.
- *  1) Login: implementa UserDetailsService (Spring lo llama al autenticar) y
- *     corta el paso si ese email lleva demasiados intentos fallidos seguidos.
- *  2) CRUD: listar/obtener/guardar/actualizar/eliminar trabajadores.
- * Al crear o cambiar la contrasena, la ciframos con BCrypt antes de guardarla.
- */
+// Servicio de los trabajadores. Hace dos cosas:
+// 1. El login: Spring lo usa para buscar al trabajador por su email.
+// 2. Crear, ver, modificar y borrar trabajadores.
+// Las contraseñas siempre se guardan cifradas con BCrypt.
 @Service
 public class TrabajadorService implements UserDetailsService {
     private final TrabajadorRepository repositorio;
@@ -44,11 +41,10 @@ public class TrabajadorService implements UserDetailsService {
         this.loginAttemptService = loginAttemptService;
     }
 
-    // --- LOGIN (Spring Security) ---
+    // ---- LOGIN ----
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Antes de mirar siquiera en la base de datos comprobamos si ese email
-        // esta bloqueado por demasiados fallos seguidos (fuerza bruta).
+        // si ese email esta bloqueado por fallar muchas veces, no le dejo entrar
         if (loginAttemptService.estaBloqueado(email)) {
             throw new LockedException(
                     "Cuenta bloqueada temporalmente por demasiados intentos fallidos. Intentalo de nuevo en unos minutos.");
@@ -57,11 +53,11 @@ public class TrabajadorService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("No existe un trabajador con email " + email));
     }
 
-    // --- CRUD ---
+    // ---- CRUD ----
     public Page<Trabajador> listar(Pageable paginacion) {
          return repositorio.findAll(paginacion);
     }
-    // Se usa en GET (/api/me)
+    // lo uso en /api/me para saber quien ha iniciado sesion
     public Trabajador obtenerPorEmail(String email) {
         return repositorio.findByEmail(email).orElseThrow();
     }
@@ -69,12 +65,10 @@ public class TrabajadorService implements UserDetailsService {
         return repositorio.findById(id).orElseThrow();
     }
 
-    // AÑADIR: se construye un Trabajador NUEVO a partir del DTO. Como el DTO
-    // no tiene id, el trabajador siempre llega a save() con id null y la base
-    // de datos le asigna uno: es imposible pisar a otro trabajador existente.
-    // La contrasena ya viene validada como obligatoria (@NotBlank en el DTO)
-    // y aqui se cifra antes de guardar. Si no llega rol, se pone el rol por
-    // defecto: nunca se guarda un trabajador con el rol sin asignar.
+    // Crear un trabajador nuevo con los datos del DTO.
+    // El DTO no trae id, asi que la base de datos le pone uno nuevo
+    // y no se puede machacar a otro trabajador.
+    // La contraseña la cifro antes de guardarla.
     public Trabajador guardar(TrabajadorCrearRequest datos) {
         Trabajador trabajador = new Trabajador();
         trabajador.setNombreCompleto(datos.nombreCompleto());
@@ -90,10 +84,8 @@ public class TrabajadorService implements UserDetailsService {
         return repositorio.save(trabajador);
     }
 
-    // ACTUALIZAR: partimos del trabajador YA guardado en la base de datos y
-    // solo pisamos los campos que llegan en la peticion. Antes se guardaba el
-    // objeto recibido tal cual, y si el JSON no traia algun campo (por ejemplo
-    // "rol" o "activo") se quedaba a null en la base de datos sin querer.
+    // Modificar un trabajador: cojo el que ya esta guardado y le cambio los datos.
+    // (antes, si en el JSON faltaba algun campo, se quedaba vacio sin querer)
     public Trabajador actualizar(Integer id, TrabajadorActualizarRequest datos) {
         //orElseThrow es como if else y sino lanza excep
         Trabajador existente = repositorio.findById(id).orElseThrow();
@@ -107,14 +99,13 @@ public class TrabajadorService implements UserDetailsService {
         existente.setFechaAlta(datos.fechaAlta());
         existente.setActivo(datos.activo());
 
-        // Si no mandan rol nuevo (no viene en el JSON), se conserva el que ya
-        // tenia -> nunca se queda sin rol.
+        // si no me mandan rol, se queda con el que tenia
         if (datos.rol() != null) {
             existente.setRol(datos.rol());
         }
 
-        // Si no mandan contrasena nueva (viene vacia o no viene), se conserva
-        // la que ya tenia cifrada; si mandan una nueva, se cifra y se cambia.
+        // si no me mandan contraseña nueva, se queda la que tenia.
+        // si me mandan una, la cifro y la cambio
         if (datos.password() != null && !datos.password().isBlank()) {
             existente.setPassword(passwordEncoder.encode(datos.password()));
         }
@@ -122,18 +113,20 @@ public class TrabajadorService implements UserDetailsService {
         return repositorio.save(existente);
     }
 
-    public void eliminar(Integer id) {
+       public void eliminar(Integer id) {
+        if (!repositorio.existsById(id)) {
+            throw new NoSuchElementException();
+        }
         repositorio.deleteById(id);
     }
 
-    // Si no llega ningun rol se usa USER por defecto: el campo nunca debe
-    // quedar sin valor (ver Trabajador.rol, nullable = false).
+    // si no me dicen el rol, le pongo USER para que nunca se quede sin rol
     private RolTrabajador rolConDefecto(RolTrabajador rol) {
         return rol == null ? RolTrabajador.USER : rol;
     }
 
-    // El DTO trae solo el id del puesto: aqui se busca el Puesto de verdad.
-    // Sin id -> trabajador sin puesto. Id que no existe -> error 400.
+    // en el DTO solo viene el id del puesto, aqui busco el puesto de verdad.
+    // sin id -> sin puesto. Si ese puesto no existe -> error 400
     private Puesto buscarPuesto(Integer idPuesto) {
         if (idPuesto == null) {
             return null;

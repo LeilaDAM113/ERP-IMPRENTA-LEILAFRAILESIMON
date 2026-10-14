@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Puesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PuestoService;
 
-/*
- * API REST de Puesto: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de Puesto: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/puesto")
 public class PuestoController {

@@ -23,8 +23,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-// Trabajador ES ADEMAS el usuario del sistema: implementa UserDetails para que
-// Spring Security pueda autenticarlo directamente (login por email + password).
+// Los trabajadores son tambien los usuarios de la aplicacion.
+// Implementa UserDetails para que Spring pueda hacer el login con su email y contraseña.
 @Entity
 @Table(name = "trabajador")
 public class Trabajador implements UserDetails {
@@ -34,20 +34,12 @@ public class Trabajador implements UserDetails {
     private String nombreCompleto;
     private String dni;
     private String telefono;
-    // unique = true evita que dos trabajadores compartan email: el login busca
-    // por email esperando encontrar como mucho UNO, y si hubiera repetidos
-    // fallaria de forma rara. El formato del email se valida al recibir el
-    // JSON, en los DTOs (TrabajadorCrearRequest / TrabajadorActualizarRequest).
+    // el email no se puede repetir, porque es con lo que se hace login
     @Column(unique = true)
     private String email;
-    // Aqui se guarda SIEMPRE cifrada (BCrypt). Las reglas de entrada
-    // (obligatoria al crear, opcional al actualizar, minimo 8 caracteres)
-    // estan en los DTOs y en TrabajadorService. nullable = false es la ultima
-    // red de seguridad: la base de datos rechaza un trabajador sin contrasena.
-    // WRITE_ONLY: /api/trabajador ya devuelve TrabajadorResponse (sin
-    // contrasena), pero otras entidades (OrdenTrabajo, OrdenTrabajador...)
-    // siguen devolviendo el Trabajador anidado en su JSON, y ahi el hash no
-    // debe salir nunca.
+    // la contraseña se guarda siempre cifrada y no puede estar vacia.
+    // WRITE_ONLY: se puede recibir pero nunca se devuelve en un JSON
+    // (por si sale un trabajador dentro de otra cosa, por ejemplo en una orden de trabajo)
     @Column(nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
@@ -57,11 +49,8 @@ public class Trabajador implements UserDetails {
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
-    // Conjunto FIJO de roles (ver RolTrabajador): antes era String libre,
-    // ahora es un enum de Java mapeado como texto (EnumType.STRING), asi que
-    // la columna en MySQL sigue siendo VARCHAR pero Java ya no deja guardar
-    // un valor que no sea uno de los cinco roles + USER por defecto.
-    // Se usa en getAuthorities() para decidir los permisos de Spring Security.
+    // el rol es un enum, asi solo se pueden poner los roles que existen.
+    // en la base de datos se guarda como texto (ADMIN, COMERCIAL...)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RolTrabajador rol;
@@ -99,35 +88,29 @@ public class Trabajador implements UserDetails {
     public RolTrabajador getRol() { return rol; }
     public void setRol(RolTrabajador rol) { this.rol = rol; }
 
-    // --- Metodos que exige UserDetails (Spring Security) ---
+    // ---- Metodos que pide UserDetails para el login ----
 
-    // El "nombre de usuario" con el que se hace login -> el email
+    // el "usuario" para entrar es el email
     @Override
     public String getUsername() {
         return email;
     }
 
-    // Permisos/roles del usuario, a partir del campo "rol". Aqui NO se anade
-    // el prefijo "ROLE_": la autoridad viaja tal cual el nombre de la
-    // constante (ADMIN, COMERCIAL...). Por eso en los controladores se
-    // comprueba con @PreAuthorize("hasAuthority('ADMIN')") y NO con hasRole(),
-    // que si esperaria el prefijo "ROLE_" por delante.
-    // Si el trabajador no tiene rol asignado (dato viejo, o alguien se olvido
-    // de ponerlo) le damos el rol basico USER para que al menos pueda entrar,
-    // aunque sin permisos de ADMIN.
+    // los permisos del trabajador salen de su rol (sin "ROLE_" delante).
+    // si no tiene rol, le doy USER, que casi no tiene permisos
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         RolTrabajador rolEfectivo = rol == null ? RolTrabajador.USER : rol;
         return List.of(new SimpleGrantedAuthority(rolEfectivo.name()));
     }
 
-    // Si el trabajador esta dado de baja (activo=false) no puede entrar
+    // si el trabajador esta dado de baja (activo = false) no puede entrar
     @Override
     public boolean isEnabled() {
         return Boolean.TRUE.equals(getActivo());
     }
 
-    // Estas tres las pide Spring; true = "cuenta sin caducar/bloquear"
+    // estas tres las pide Spring, las dejo siempre a true (cuenta valida)
     @Override
     public boolean isAccountNonExpired() {
         return true;

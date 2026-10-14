@@ -1,6 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
-// Valores propuestos para el ciclo de vida de un albaran
+// Estados que puede tener un albaran
 public enum EstadoAlbaran {
     PENDIENTE,
     ENTREGADO,

@@ -22,27 +22,12 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.service.TrabajadorService;
 
 import jakarta.validation.Valid;
 
-/*
- * API REST de Trabajador: listar, obtener, anadir, actualizar y eliminar.
- *
- * Dar de alta, modificar o eliminar trabajadores es delicado (aqui se decide
- * quien puede entrar en la aplicacion y con que rol), asi que esas tres
- * operaciones llevan @PreAuthorize("hasAuthority('ADMIN')") y solo las puede
- * hacer un trabajador con rol ADMIN. Se usa hasAuthority() y no hasRole()
- * porque Trabajador.getAuthorities() ya no anade el prefijo "ROLE_", asi que
- * hay que comparar el texto "ADMIN" tal cual. Listar y consultar uno se dejan
- * abiertos a cualquiera que haya iniciado sesion, como un listado interno de
- * companeros.
- *
- * La API trabaja con DTOs (paquete dto), no con la entidad Trabajador:
- *  - Se RECIBE TrabajadorCrearRequest / TrabajadorActualizarRequest, que no
- *    tienen id (lo genera la base de datos o lo indica la URL).
- *  - Se DEVUELVE TrabajadorResponse, sin contrasena ni los campos internos de
- *    Spring Security (UserDetails).
- *
- * @Valid activa las validaciones puestas en los DTOs (email con formato
- * correcto, contrasena obligatoria al crear, al menos 8 caracteres...).
- */
+// Endpoints de los trabajadores: ver todos, ver uno, crear, modificar y borrar.
+// Crear, modificar y borrar solo lo puede hacer el ADMIN, porque aqui se decide
+// quien entra en la aplicacion y con que rol.
+// Uso hasAuthority('ADMIN') y no hasRole porque mis roles no llevan "ROLE_" delante.
+// Recibo y devuelvo DTOs, asi la contraseña nunca sale en las respuestas.
+// @Valid hace que se comprueben las reglas del DTO (email bien escrito, contraseña de 8...)
 @RestController
 @RequestMapping("/api/trabajador")
 public class TrabajadorController {
@@ -52,21 +37,16 @@ public class TrabajadorController {
         this.servicio = servicio;
     }
 
-    // LISTAR paginado: por defecto los 30 primeros (?page=0&size=30).
-    // No se usa Pageable como parametro porque eso permitiria al cliente
-    // mandar ?sort=cualquierCampo (incluso ?sort=password). Aqui solo se
-    // aceptan page y size, y el orden es siempre por id.
+    // Lista de trabajadores por paginas, de 30 en 30 (?page=1&size=30).
+    // Solo dejo elegir la pagina y el tamaño, y siempre ordeno por id,
+    // para que nadie pueda ordenar por campos raros como la contraseña.
     @GetMapping
     public PagedModel<TrabajadorResponse> listar(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "30") int size) {
-        // En la URL la primera pagina es la 1 (?page=1), pero en Spring las
-        // paginas empiezan en 0, por eso se resta 1 al crear el PageRequest.
-        // OJO: en la respuesta, page.number sigue contando desde 0 (al pedir
-        // ?page=1 devuelve "number": 0).
-        // Se limita size (entre 1 y 100) para que nadie pida 100000 de golpe.
-        // page - 1 pasa a la numeracion de Spring, y Math.max(..., 0) evita
-        // un indice negativo si llega ?page=0 o menos (seria un error 500).
+        // en la URL la primera pagina es la 1, pero Spring empieza a contar en 0,
+        // por eso le resto 1 (y nunca bajo de 0).
+        // el tamaño lo dejo entre 1 y 100 para que nadie pida miles de golpe
         int tamano = Math.min(Math.max(size, 1), 100);
         Pageable paginacion = PageRequest.of(Math.max(page - 1, 0), tamano, Sort.by("id"));
         return new PagedModel<>(servicio.listar(paginacion).map(TrabajadorResponse::desde));

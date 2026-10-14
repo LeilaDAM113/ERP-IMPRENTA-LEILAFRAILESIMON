@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaFactura;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.LineaFacturaService;
 
-/*
- * API REST de LineaFactura: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de LineaFactura: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/linea-factura")
 public class LineaFacturaController {

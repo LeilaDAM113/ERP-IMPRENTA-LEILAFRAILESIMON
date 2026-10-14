@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.OrdenEmpleado;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.OrdenEmpleadoService;
 
-/*
- * API REST de OrdenEmpleado: listar, obtener, anadir, actualizar y eliminar.
- */
+// Endpoints de OrdenEmpleado: ver todos, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/orden-empleado")
 public class OrdenEmpleadoController {

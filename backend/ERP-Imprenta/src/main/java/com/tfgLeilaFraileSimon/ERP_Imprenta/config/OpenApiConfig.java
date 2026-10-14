@@ -6,10 +6,8 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
-/*
- * Documentacion de la API en Swagger (http://localhost:8080/swagger-ui.html).
- * Anade el boton "Authorize" para pegar el token y probar los endpoints protegidos.
- */
+// Configuracion de Swagger (http://localhost:8080/swagger-ui.html).
+// Pone el boton "Authorize" para pegar el token y probar la API.
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "API de Sprinta", version = "1.0"),
         security = @SecurityRequirement(name = "token"))

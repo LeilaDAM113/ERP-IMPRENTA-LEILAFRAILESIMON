@@ -9,16 +9,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-/*
- * Datos que se aceptan al CREAR un trabajador (POST /api/trabajador).
- *
- * No lleva id: lo genera la base de datos (autoincremental). Si el cliente lo
- * mandara en el JSON, Jackson lo ignora porque aqui no existe ese campo, asi
- * que no hay forma de "colar" un id y pisar a otro trabajador.
- *
- * Al crear, la contrasena es OBLIGATORIA (@NotBlank): no hay ninguna anterior
- * que conservar. El puesto se recibe solo por su id (idPuesto), no como objeto.
- */
+// Datos para crear un trabajador (POST /api/trabajador).
+// No lleva id, lo pone la base de datos (asi nadie puede machacar a otro trabajador).
+// La contraseña es obligatoria. El puesto se manda solo con su id.
 public record TrabajadorCrearRequest(
         String nombreCompleto,
         String dni,
