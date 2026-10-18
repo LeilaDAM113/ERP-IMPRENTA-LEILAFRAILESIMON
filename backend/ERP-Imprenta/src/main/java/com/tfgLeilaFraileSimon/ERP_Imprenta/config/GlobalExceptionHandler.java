@@ -1,4 +1,4 @@
-package com.tfgLeilaFraileSimon.ERP_Imprenta.exception;
+package com.tfgLeilaFraileSimon.ERP_Imprenta.config;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -26,7 +26,7 @@ import tools.jackson.databind.exc.InvalidFormatException;
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // Monto la respuesta de error siempre con el mismo formato
+    // monto el error siempre igual
     private ResponseEntity<RespuestaError> respuesta(HttpStatusCode estado, String mensaje,
             Map<String, String> errores, HttpServletRequest peticion) {
         RespuestaError cuerpo = new RespuestaError(estado.value(), mensaje, errores,
@@ -34,14 +34,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(estado).body(cuerpo);
     }
 
-    // Piden un id que no existe -> 404
+    // el id no existe -> 404
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RespuestaError> noEncontrado(NoSuchElementException e, HttpServletRequest peticion) {
         return respuesta(HttpStatus.NOT_FOUND, "No existe ningun registro con ese id", null, peticion);
     }
 
-    // Algun campo no cumple las reglas (@NotBlank, @Email...) -> 400
-    // y digo que campo falla para que la app lo pueda marcar en rojo
+    // algun campo no cumple las reglas (@NotBlank, @Email...) -> 400 y digo cual falla
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RespuestaError> datosNoValidos(MethodArgumentNotValidException e,
             HttpServletRequest peticion) {
@@ -51,8 +50,7 @@ public class GlobalExceptionHandler {
         return respuesta(HttpStatus.BAD_REQUEST, "Hay datos que no son validos", errores, peticion);
     }
 
-    // El JSON viene mal escrito o con un valor raro -> 400
-    // (por ejemplo "rol": "Operario" en vez de "OPERARIO")
+    // el json viene mal o con un valor raro -> 400 (por ejemplo "rol": "Operario")
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<RespuestaError> jsonNoValido(HttpMessageNotReadableException e,
             HttpServletRequest peticion) {
@@ -60,7 +58,7 @@ public class GlobalExceptionHandler {
             String campo = formato.getPath().isEmpty() ? "dato"
                     : formato.getPath().get(formato.getPath().size() - 1).getPropertyName();
             String mensaje = "El valor '" + formato.getValue() + "' no es valido para " + campo;
-            // si es un enum (rol, estado...) le digo que valores puede poner
+            // si es un enum digo los valores que se pueden poner
             if (formato.getTargetType() != null && formato.getTargetType().isEnum()) {
                 mensaje += ". Valores permitidos: " + Arrays.toString(formato.getTargetType().getEnumConstants());
             }
@@ -70,7 +68,7 @@ public class GlobalExceptionHandler {
                 "El JSON no es valido (revisa comillas, comas, numeros y fechas AAAA-MM-DD)", null, peticion);
     }
 
-    // En la URL ponen algo que no es un numero, por ejemplo /api/cliente/abc -> 400
+    // en la url no ponen un numero (/api/cliente/abc) -> 400
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<RespuestaError> parametroNoValido(MethodArgumentTypeMismatchException e,
             HttpServletRequest peticion) {
@@ -78,9 +76,8 @@ public class GlobalExceptionHandler {
                 null, peticion);
     }
 
-    // La base de datos no deja guardar o borrar -> 409
-    // pasa con un email repetido o al borrar algo que se esta usando
-    // (por ejemplo un cliente que ya tiene presupuestos)
+    // la base de datos no deja guardar o borrar -> 409
+    // (email repetido o borrar un cliente que tiene presupuestos)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<RespuestaError> conflicto(DataIntegrityViolationException e,
             HttpServletRequest peticion) {
@@ -89,16 +86,15 @@ public class GlobalExceptionHandler {
                 peticion);
     }
 
-    // El rol no tiene permiso para hacer eso -> 403
+    // el rol no tiene permiso -> 403
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<RespuestaError> sinPermiso(AccessDeniedException e, HttpServletRequest peticion) {
         return respuesta(HttpStatus.FORBIDDEN, "No tienes permiso para hacer esta operacion", null, peticion);
     }
 
-    // Cualquier otro error.
-    // Si ya trae su codigo (por ejemplo el 401 y el 429 del login, o un 405)
-    // respeto ese codigo. Si no, es un fallo que no esperaba -> 500,
-    // lo apunto en la consola y al usuario no le enseño detalles internos.
+    // cualquier otro error
+    // si ya trae su codigo (401, 429, 405...) lo dejo, si no es un 500
+    // y lo saco por consola sin enseñar detalles al usuario
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RespuestaError> otroError(Exception e, HttpServletRequest peticion) {
         if (e instanceof ErrorResponse conCodigo) {

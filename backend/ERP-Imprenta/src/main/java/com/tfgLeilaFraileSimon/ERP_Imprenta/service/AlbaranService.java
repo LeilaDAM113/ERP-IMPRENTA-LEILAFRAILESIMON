@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Albaran;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.AlbaranRepository;
 
-// Lo que se puede hacer con Albaran (lo usa AlbaranController)
+// servicio de Albaran
 @Service
 public class AlbaranService {
     private final AlbaranRepository repositorio;
@@ -31,9 +31,9 @@ public class AlbaranService {
         return repositorio.save(objeto);
     }
 
-    // cambiar los datos de uno que ya existe
+    // modificar uno
     public Albaran actualizar(Integer id, Albaran objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -43,7 +43,7 @@ public class AlbaranService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

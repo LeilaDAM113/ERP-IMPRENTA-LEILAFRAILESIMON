@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Pedido;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.PedidoRepository;
 
-// Lo que se puede hacer con Pedido (lo usa PedidoController)
+// servicio de Pedido
 @Service
 public class PedidoService {
     private final PedidoRepository repositorio;
@@ -31,9 +31,9 @@ public class PedidoService {
         return repositorio.save(objeto);
     }
 
-        // cambiar los datos de uno que ya existe
+        // modificar uno
     public Pedido actualizar(Integer id, Pedido objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -43,7 +43,7 @@ public class PedidoService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

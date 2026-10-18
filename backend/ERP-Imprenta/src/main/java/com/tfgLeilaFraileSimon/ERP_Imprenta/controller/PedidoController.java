@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Pedido;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PedidoService;
 
-// Endpoints de Pedido: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Pedido: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/pedido")
 public class PedidoController {

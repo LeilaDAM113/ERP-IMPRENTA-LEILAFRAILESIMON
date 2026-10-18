@@ -9,9 +9,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-// Datos para crear un trabajador (POST /api/trabajador).
-// No lleva id, lo pone la base de datos (asi nadie puede machacar a otro trabajador).
-// La contraseña es obligatoria. El puesto se manda solo con su id.
+// datos para crear un trabajador
+// no lleva id porque lo pone la base de datos
+// la contraseña es obligatoria y del puesto solo mando el id
 public record TrabajadorCrearRequest(
         String nombreCompleto,
         String dni,

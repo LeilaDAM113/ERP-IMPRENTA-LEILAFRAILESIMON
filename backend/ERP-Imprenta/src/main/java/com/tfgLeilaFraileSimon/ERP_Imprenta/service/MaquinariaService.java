@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Maquinaria;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.MaquinariaRepository;
 
-// Lo que se puede hacer con Maquinaria (lo usa MaquinariaController)
+// servicio de Maquinaria
 @Service
 public class MaquinariaService {
     private final MaquinariaRepository repositorio;
@@ -31,9 +31,9 @@ public class MaquinariaService {
         return repositorio.save(objeto);
     }
 
-       // cambiar los datos de uno que ya existe
+       // modificar uno
     public Maquinaria actualizar(Integer id, Maquinaria objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -43,7 +43,7 @@ public class MaquinariaService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

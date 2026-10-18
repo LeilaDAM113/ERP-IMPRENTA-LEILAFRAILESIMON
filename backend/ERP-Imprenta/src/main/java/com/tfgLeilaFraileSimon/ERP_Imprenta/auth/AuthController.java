@@ -1,4 +1,4 @@
-package com.tfgLeilaFraileSimon.ERP_Imprenta.controller;
+package com.tfgLeilaFraileSimon.ERP_Imprenta.auth;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,19 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.LoginRequest;
-import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.LoginResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.TrabajadorResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
-import com.tfgLeilaFraileSimon.ERP_Imprenta.security.LoginAttemptService;
-import com.tfgLeilaFraileSimon.ERP_Imprenta.service.TokenService;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.TrabajadorService;
 
 import jakarta.validation.Valid;
 
-// Login y "quien soy":
-// - POST /auth/login: compruebo el email y la contraseña y devuelvo un token
-// - GET /api/me: devuelvo los datos del que ha iniciado sesion
+// login (POST /auth/login) y quien soy (GET /api/me)
 @RestController
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -44,28 +38,28 @@ public class AuthController {
     @PostMapping("/auth/login")
     @SecurityRequirements 
     public LoginResponse login(@Valid @RequestBody LoginRequest datos) {
-        // si ha fallado 5 veces seguidas, esta bloqueado (429)
+        // si ha fallado 5 veces esta bloqueado -> 429
         if (loginAttemptService.estaBloqueado(datos.email())) {
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
                     "Cuenta bloqueada por demasiados intentos fallidos. Intentalo en unos minutos.");
         }
         try {
-            // Spring comprueba que el email y la contraseña estan bien
+            // spring mira si el email y la contraseña estan bien
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(datos.email(), datos.password()));
-            // si esta bien, le creo su token
+            // si esta bien le creo el token
             Trabajador trabajador = (Trabajador) auth.getPrincipal();
             return new LoginResponse(tokenService.generarToken(trabajador), tokenService.segundosValidez(),
                     TrabajadorResponse.desde(trabajador));
         } catch (AuthenticationException e) {
-            // pongo el mismo mensaje si falla el email o la contraseña, para no dar pistas
+            // mismo mensaje falle el email o la contraseña, asi no doy pistas
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email o contraseña incorrectos");
         }
     }
 
     @GetMapping("/api/me")
     public TrabajadorResponse yo(@AuthenticationPrincipal Jwt jwt) {
-        // dentro del token va el email (lo meti al hacer login)
+        // dentro del token va el email 
         return TrabajadorResponse.desde(trabajadorService.obtenerPorEmail(jwt.getSubject()));
     }
 }

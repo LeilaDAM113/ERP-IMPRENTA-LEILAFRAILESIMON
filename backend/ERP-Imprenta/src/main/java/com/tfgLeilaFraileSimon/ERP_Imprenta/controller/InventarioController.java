@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Inventario;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.InventarioService;
 
-// Endpoints de Inventario: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Inventario: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/inventario")
 public class InventarioController {

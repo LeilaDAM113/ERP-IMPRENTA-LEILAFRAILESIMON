@@ -22,12 +22,11 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.service.TrabajadorService;
 
 import jakarta.validation.Valid;
 
-// Endpoints de los trabajadores: ver todos, ver uno, crear, modificar y borrar.
-// Crear, modificar y borrar solo lo puede hacer el ADMIN, porque aqui se decide
-// quien entra en la aplicacion y con que rol.
-// Uso hasAuthority('ADMIN') y no hasRole porque mis roles no llevan "ROLE_" delante.
-// Recibo y devuelvo DTOs, asi la contraseña nunca sale en las respuestas.
-// @Valid hace que se comprueben las reglas del DTO (email bien escrito, contraseña de 8...)
+// endpoints de trabajadores
+// crear, modificar y borrar solo lo puede hacer el admin
+// uso hasAuthority y no hasRole porque mis roles no llevan ROLE_ delante
+// uso DTOs para que la contraseña no salga nunca
+// @Valid comprueba las reglas del DTO (email, contraseña de 8...)
 @RestController
 @RequestMapping("/api/trabajador")
 public class TrabajadorController {
@@ -37,16 +36,13 @@ public class TrabajadorController {
         this.servicio = servicio;
     }
 
-    // Lista de trabajadores por paginas, de 30 en 30 (?page=1&size=30).
-    // Solo dejo elegir la pagina y el tamaño, y siempre ordeno por id,
-    // para que nadie pueda ordenar por campos raros como la contraseña.
+    // lista por paginas de 30 en 30 (?page=1&size=30), siempre ordenada por id
     @GetMapping
     public PagedModel<TrabajadorResponse> listar(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "30") int size) {
-        // en la URL la primera pagina es la 1, pero Spring empieza a contar en 0,
-        // por eso le resto 1 (y nunca bajo de 0).
-        // el tamaño lo dejo entre 1 y 100 para que nadie pida miles de golpe
+        // en la url empiezo en la pagina 1 pero spring en la 0, por eso resto 1
+        // y no dejo pedir mas de 100 de golpe
         int tamano = Math.min(Math.max(size, 1), 100);
         Pageable paginacion = PageRequest.of(Math.max(page - 1, 0), tamano, Sort.by("id"));
         return new PagedModel<>(servicio.listar(paginacion).map(TrabajadorResponse::desde));

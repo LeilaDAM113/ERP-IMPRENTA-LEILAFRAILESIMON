@@ -6,5 +6,5 @@ public enum RolTrabajador {
     ENCARGADO_TALLER,
     OPERARIO,
     TRANSPORTISTA,
-    USER, // rol por defecto cuando no se especifica ninguno (ver TrabajadorService)
+    USER, // el que se pone si no le doy ninguno
 }

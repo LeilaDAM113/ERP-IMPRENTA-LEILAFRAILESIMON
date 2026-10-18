@@ -1,8 +1,8 @@
-package com.tfgLeilaFraileSimon.ERP_Imprenta.dto;
+package com.tfgLeilaFraileSimon.ERP_Imprenta.auth;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-// Lo que manda la app para hacer login: email y contraseña.
+// lo que manda la app para el login
 public record LoginRequest(
         @NotBlank(message = "El email es obligatorio")
         @Email(message = "El email no tiene un formato valido")

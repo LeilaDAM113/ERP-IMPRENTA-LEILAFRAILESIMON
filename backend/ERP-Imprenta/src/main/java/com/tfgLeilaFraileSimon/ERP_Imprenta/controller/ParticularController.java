@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Particular;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.ParticularService;
 
-// Endpoints de Particular: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Particular: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/particular")
 public class ParticularController {

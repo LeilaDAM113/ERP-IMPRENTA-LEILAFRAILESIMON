@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Pago;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.PagoRepository;
 
-// Lo que se puede hacer con Pago (lo usa PagoController)
+// servicio de Pago
 @Service
 public class PagoService {
     private final PagoRepository repositorio;
@@ -30,9 +30,9 @@ public class PagoService {
         return repositorio.save(objeto);
     }
 
-        // cambiar los datos de uno que ya existe
+        // modificar uno
     public Pago actualizar(Integer id, Pago objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -42,7 +42,7 @@ public class PagoService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

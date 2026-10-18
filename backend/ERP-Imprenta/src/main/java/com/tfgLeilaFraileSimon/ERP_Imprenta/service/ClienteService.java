@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Cliente;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.ClienteRepository;
 
-// Lo que se puede hacer con Cliente (lo usa ClienteController)
+// servicio de Cliente
 @Service
 public class ClienteService {
     private final ClienteRepository repositorio;
@@ -31,9 +31,9 @@ public class ClienteService {
         return repositorio.save(objeto);
     }
 
-        // cambiar los datos de uno que ya existe
+        // modificar uno
     public Cliente actualizar(Integer id, Cliente objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -43,7 +43,7 @@ public class ClienteService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

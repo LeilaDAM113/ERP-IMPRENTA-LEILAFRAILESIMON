@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Cliente;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.ClienteService;
 
-// Endpoints de Cliente: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Cliente: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/cliente")
 public class ClienteController {

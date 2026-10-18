@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.OrdenTrabajo;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.OrdenTrabajoService;
 
-// Endpoints de OrdenTrabajo: ver todos, ver uno, crear, modificar y borrar
+// endpoints de OrdenTrabajo: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/orden-trabajo")
 public class OrdenTrabajoController {

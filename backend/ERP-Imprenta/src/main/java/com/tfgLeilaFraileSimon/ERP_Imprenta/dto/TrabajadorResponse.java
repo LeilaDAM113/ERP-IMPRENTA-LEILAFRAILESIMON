@@ -7,9 +7,8 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Puesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 
-// Lo que devuelve la API de un trabajador.
-// No lleva la contraseña ni las cosas internas de Spring (username, enabled...).
-// El puesto va con su id y su nombre, o null si no tiene.
+// lo que devuelve la api de un trabajador (sin la contraseña)
+// del puesto solo saco el id y el nombre
 public record TrabajadorResponse(
         Integer id,
         String nombreCompleto,

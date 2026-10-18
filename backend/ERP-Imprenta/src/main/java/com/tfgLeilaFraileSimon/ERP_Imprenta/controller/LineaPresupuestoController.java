@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaPresupuesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.LineaPresupuestoService;
 
-// Endpoints de LineaPresupuesto: ver todos, ver uno, crear, modificar y borrar
+// endpoints de LineaPresupuesto: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/linea-presupuesto")
 public class LineaPresupuestoController {

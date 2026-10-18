@@ -13,11 +13,9 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RolTrabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.TrabajadorRepository;
 
-// Crea el primer administrador al arrancar la aplicacion.
-// Hace falta porque para dar de alta trabajadores hay que ser ADMIN,
-// y la primera vez todavia no hay ninguno.
-// Solo lo crea si la tabla de trabajadores esta vacia.
-// Su email y contraseña estan en application.properties (app.admin-inicial).
+// crea el primer admin al arrancar si no hay ningun trabajador
+// (si no nadie podria crear trabajadores, porque hay que ser admin)
+// el email y la contraseña estan en application.properties
 @Component
 public class AdminInicialRunner implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(AdminInicialRunner.class);
@@ -39,7 +37,7 @@ public class AdminInicialRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (repositorio.count() > 0) {
-            return; // ya hay trabajadores dados de alta, no hace falta crear ningun admin
+            return; // ya hay trabajadores, no hace falta
         }
 
         Trabajador admin = new Trabajador();

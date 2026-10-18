@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Maquinaria;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.MaquinariaService;
 
-// Endpoints de Maquinaria: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Maquinaria: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/maquinaria")
 public class MaquinariaController {

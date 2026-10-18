@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Albaran;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.AlbaranService;
 
-// Endpoints de Albaran: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Albaran: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/albaran")
 public class AlbaranController {

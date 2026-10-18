@@ -23,8 +23,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-// Los trabajadores son tambien los usuarios de la aplicacion.
-// Implementa UserDetails para que Spring pueda hacer el login con su email y contraseña.
+// los trabajadores son tambien los usuarios que entran en la app
+// implementa UserDetails para que spring pueda hacer el login
 @Entity
 @Table(name = "trabajador")
 public class Trabajador implements UserDetails {
@@ -34,12 +34,11 @@ public class Trabajador implements UserDetails {
     private String nombreCompleto;
     private String dni;
     private String telefono;
-    // el email no se puede repetir, porque es con lo que se hace login
+    // el email no se puede repetir porque es con lo que se entra
     @Column(unique = true)
     private String email;
-    // la contraseña se guarda siempre cifrada y no puede estar vacia.
-    // WRITE_ONLY: se puede recibir pero nunca se devuelve en un JSON
-    // (por si sale un trabajador dentro de otra cosa, por ejemplo en una orden de trabajo)
+    // la contraseña va cifrada y es obligatoria
+    // WRITE_ONLY: se puede mandar pero nunca sale en el json
     @Column(nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
@@ -49,8 +48,7 @@ public class Trabajador implements UserDetails {
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
-    // el rol es un enum, asi solo se pueden poner los roles que existen.
-    // en la base de datos se guarda como texto (ADMIN, COMERCIAL...)
+    // el rol es un enum y se guarda como texto (ADMIN, COMERCIAL...)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RolTrabajador rol;
@@ -88,29 +86,28 @@ public class Trabajador implements UserDetails {
     public RolTrabajador getRol() { return rol; }
     public void setRol(RolTrabajador rol) { this.rol = rol; }
 
-    // ---- Metodos que pide UserDetails para el login ----
+    // ---- metodos de UserDetails para el login ----
 
-    // el "usuario" para entrar es el email
+    // para entrar se usa el email
     @Override
     public String getUsername() {
         return email;
     }
 
-    // los permisos del trabajador salen de su rol (sin "ROLE_" delante).
-    // si no tiene rol, le doy USER, que casi no tiene permisos
+    // los permisos salen del rol, si no tiene le pongo USER
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         RolTrabajador rolEfectivo = rol == null ? RolTrabajador.USER : rol;
         return List.of(new SimpleGrantedAuthority(rolEfectivo.name()));
     }
 
-    // si el trabajador esta dado de baja (activo = false) no puede entrar
+    // si esta dado de baja no puede entrar
     @Override
     public boolean isEnabled() {
         return Boolean.TRUE.equals(getActivo());
     }
 
-    // estas tres las pide Spring, las dejo siempre a true (cuenta valida)
+    // estas tres las pide spring, las dejo a true
     @Override
     public boolean isAccountNonExpired() {
         return true;

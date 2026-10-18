@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Inventario;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.InventarioRepository;
 
-// Lo que se puede hacer con Inventario (lo usa InventarioController)
+// servicio de Inventario
 @Service
 public class InventarioService {
     private final InventarioRepository repositorio;
@@ -31,9 +31,9 @@ public class InventarioService {
         return repositorio.save(objeto);
     }
 
-       // cambiar los datos de uno que ya existe
+       // modificar uno
     public Inventario actualizar(Integer id, Inventario objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -43,7 +43,7 @@ public class InventarioService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

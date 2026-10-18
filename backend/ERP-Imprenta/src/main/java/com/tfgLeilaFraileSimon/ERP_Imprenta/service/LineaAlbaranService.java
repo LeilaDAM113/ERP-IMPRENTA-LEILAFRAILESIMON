@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaAlbaran;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.LineaAlbaranRepository;
 
-// Lo que se puede hacer con LineaAlbaran (lo usa LineaAlbaranController)
+// servicio de LineaAlbaran
 @Service
 public class LineaAlbaranService {
     private final LineaAlbaranRepository repositorio;
@@ -28,9 +28,9 @@ public class LineaAlbaranService {
         return repositorio.save(objeto);
     }
 
-       // cambiar los datos de uno que ya existe
+       // modificar uno
     public LineaAlbaran actualizar(Integer id, LineaAlbaran objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -40,7 +40,7 @@ public class LineaAlbaranService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

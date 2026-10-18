@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaPresupuesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.LineaPresupuestoRepository;
 
-// Lo que se puede hacer con LineaPresupuesto (lo usa LineaPresupuestoController)
+// servicio de LineaPresupuesto
 @Service
 public class LineaPresupuestoService {
     private final LineaPresupuestoRepository repositorio;
@@ -28,9 +28,9 @@ public class LineaPresupuestoService {
         return repositorio.save(objeto);
     }
 
-       // cambiar los datos de uno que ya existe
+       // modificar uno
     public LineaPresupuesto actualizar(Integer id, LineaPresupuesto objeto) {
-        // si no existe ese id, error 404 (antes creaba uno nuevo sin querer)
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }
@@ -40,7 +40,7 @@ public class LineaPresupuestoService {
 
     // borrar uno
     public void eliminar(Integer id) {
-        // si no existe ese id, error 404
+        // si no existe da 404
         if (!repositorio.existsById(id)) {
             throw new NoSuchElementException();
         }

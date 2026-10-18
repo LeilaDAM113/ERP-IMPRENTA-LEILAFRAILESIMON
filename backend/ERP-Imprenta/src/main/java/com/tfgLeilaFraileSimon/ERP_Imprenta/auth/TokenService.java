@@ -1,4 +1,4 @@
-package com.tfgLeilaFraileSimon.ERP_Imprenta.service;
+package com.tfgLeilaFraileSimon.ERP_Imprenta.auth;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +10,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Trabajador;
-
-// Crea el token de un trabajador cuando hace login.
-// Dentro del token va su email, su rol, cuando se ha creado y cuando caduca.
+// crea el token cuando alguien hace login
+// lleva el email, el rol, cuando se crea y cuando caduca
+// idea para el futuro: verificacion en dos pasos (2FA) al hacer login
 @Service
 public class TokenService {
     private final JwtEncoder encoder;

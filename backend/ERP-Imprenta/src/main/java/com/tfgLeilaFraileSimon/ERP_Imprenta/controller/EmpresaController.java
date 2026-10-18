@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Empresa;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.EmpresaService;
 
-// Endpoints de Empresa: ver todos, ver uno, crear, modificar y borrar
+// endpoints de Empresa: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/empresa")
 public class EmpresaController {
