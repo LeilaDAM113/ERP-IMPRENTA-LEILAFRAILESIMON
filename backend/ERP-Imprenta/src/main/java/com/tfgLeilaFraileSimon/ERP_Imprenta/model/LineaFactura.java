@@ -1,5 +1,5 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
-
+import java.math.BigDecimal;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +27,9 @@ public class LineaFactura {
     @JoinColumn(name = "id_linea_presupuesto")
     private LineaPresupuesto lineaPresupuesto;
     private Integer cantidad;
+    private String descripcion;
+    private BigDecimal precioUnitario;
+    private BigDecimal subtotal;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -45,5 +48,13 @@ public class LineaFactura {
 
     public Integer getCantidad() { return cantidad; }
     public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
+    
+    public String getDescripcion() { return descripcion; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
+    public BigDecimal getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(BigDecimal precioUnitario) { this.precioUnitario = precioUnitario; }
+
+    public BigDecimal getSubtotal() { return subtotal; }
+    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
 }

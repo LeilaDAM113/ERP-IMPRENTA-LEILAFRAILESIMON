@@ -6,9 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 
 @Entity
 @Table(name = "proveedor")
@@ -30,9 +29,6 @@ public class Proveedor {
     private String observaciones;
     private Boolean activo;
     private LocalDate fechaAlta;
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
-    private Catalogo producto;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -78,8 +74,4 @@ public class Proveedor {
 
     public LocalDate getFechaAlta() { return fechaAlta; }
     public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
-
-    public Catalogo getProducto() { return producto; }
-    public void setProducto(Catalogo producto) { this.producto = producto; }
-
 }

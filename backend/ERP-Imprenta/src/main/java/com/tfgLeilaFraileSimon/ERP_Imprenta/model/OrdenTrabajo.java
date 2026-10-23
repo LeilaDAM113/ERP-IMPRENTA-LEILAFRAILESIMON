@@ -29,6 +29,7 @@ public class OrdenTrabajo {
     private Trabajador trabajador;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private LocalDate fechaEntrega;
     @Enumerated(EnumType.STRING)
     private PrioridadOrden prioridad;
     @Enumerated(EnumType.STRING)
@@ -63,5 +64,8 @@ public class OrdenTrabajo {
 
     public EstadoOrdenTrabajo getEstado() { return estado; }
     public void setEstado(EstadoOrdenTrabajo estado) { this.estado = estado; }
+    
+    public LocalDate getFechaEntrega() { return fechaEntrega; }
+    public void setFechaEntrega(LocalDate fechaEntrega) { this.fechaEntrega = fechaEntrega; }
 
 }

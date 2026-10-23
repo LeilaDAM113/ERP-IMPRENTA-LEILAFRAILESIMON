@@ -22,6 +22,8 @@ public class Cliente {
     private String telefono;
     private String email;
     private LocalDate fechaAlta;
+    @Enumerated(EnumType.STRING)
+    private FormaPago formaPago;
 
   
     public Integer getId() { return id; }
@@ -41,5 +43,7 @@ public class Cliente {
 
     public LocalDate getFechaAlta() { return fechaAlta; }
     public void setFechaAlta(LocalDate fechaAlta) { this.fechaAlta = fechaAlta; }
-
+   
+    public FormaPago getFormaPago() { return formaPago; }
+    public void setFormaPago(FormaPago formaPago) { this.formaPago = formaPago; }
 }

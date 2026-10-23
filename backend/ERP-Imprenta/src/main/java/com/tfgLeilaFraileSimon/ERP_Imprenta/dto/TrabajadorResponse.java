@@ -17,6 +17,7 @@ public record TrabajadorResponse(
         String email,
         PuestoResumen puesto,
         BigDecimal salario,
+        BigDecimal costeHora,
         LocalDate fechaAlta,
         Boolean activo,
         RolTrabajador rol) {
@@ -34,6 +35,7 @@ public record TrabajadorResponse(
                 t.getEmail(),
                 p == null ? null : new PuestoResumen(p.getId(), p.getNombre()),
                 t.getSalario(),
+                t.getCosteHora(),
                 t.getFechaAlta(),
                 t.getActivo(),
                 t.getRol());

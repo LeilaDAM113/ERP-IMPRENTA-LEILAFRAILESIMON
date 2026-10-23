@@ -30,16 +30,6 @@ public class Pago {
     private BigDecimal importe;
     @Enumerated(EnumType.STRING)
     private EstadoPago estado;
-    @ManyToOne
-    @JoinColumn(name = "id_orden_trabajo")
-    private OrdenTrabajo ordenTrabajo;
-    @ManyToOne
-    @JoinColumn(name = "id_proveedor")
-    private Proveedor proveedor;
-    @ManyToOne
-    @JoinColumn(name = "id_inventario")
-    private Inventario inventario;
-
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -64,14 +54,4 @@ public class Pago {
 
     public EstadoPago getEstado() { return estado; }
     public void setEstado(EstadoPago estado) { this.estado = estado; }
-
-    public OrdenTrabajo getOrdenTrabajo() { return ordenTrabajo; }
-    public void setOrdenTrabajo(OrdenTrabajo ordenTrabajo) { this.ordenTrabajo = ordenTrabajo; }
-
-    public Proveedor getProveedor() { return proveedor; }
-    public void setProveedor(Proveedor proveedor) { this.proveedor = proveedor; }
-
-    public Inventario getInventario() { return inventario; }
-    public void setInventario(Inventario inventario) { this.inventario = inventario; }
-
 }

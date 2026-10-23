@@ -26,7 +26,13 @@ public class LineaPresupuesto {
     private Integer cantidad;
     private BigDecimal subtotal;
     private BigDecimal total;
-
+    // de donde sale el precio
+    private BigDecimal costeMaterial;
+    private BigDecimal costeMaquina;
+    private BigDecimal costeManoObra;
+    // horas previstas, para compararlas con las reales
+    private BigDecimal horasEstimadas;
+    private BigDecimal margen;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -49,4 +55,18 @@ public class LineaPresupuesto {
     public BigDecimal getTotal() { return total; }
     public void setTotal(BigDecimal total) { this.total = total; }
 
+    public BigDecimal getCosteMaterial() { return costeMaterial; }
+    public void setCosteMaterial(BigDecimal costeMaterial) { this.costeMaterial = costeMaterial; }
+
+    public BigDecimal getCosteMaquina() { return costeMaquina; }
+    public void setCosteMaquina(BigDecimal costeMaquina) { this.costeMaquina = costeMaquina; }
+
+    public BigDecimal getCosteManoObra() { return costeManoObra; }
+    public void setCosteManoObra(BigDecimal costeManoObra) { this.costeManoObra = costeManoObra; }
+
+    public BigDecimal getHorasEstimadas() { return horasEstimadas; }
+    public void setHorasEstimadas(BigDecimal horasEstimadas) { this.horasEstimadas = horasEstimadas; }
+
+    public BigDecimal getMargen() { return margen; }
+    public void setMargen(BigDecimal margen) { this.margen = margen; }
 }

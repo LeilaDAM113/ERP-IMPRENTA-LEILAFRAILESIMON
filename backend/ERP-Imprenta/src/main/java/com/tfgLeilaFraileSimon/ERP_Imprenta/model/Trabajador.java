@@ -52,6 +52,8 @@ public class Trabajador implements UserDetails {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RolTrabajador rol;
+    // lo que cuesta una hora de este trabajador (para los presupuestos)
+    private BigDecimal costeHora;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -85,6 +87,9 @@ public class Trabajador implements UserDetails {
 
     public RolTrabajador getRol() { return rol; }
     public void setRol(RolTrabajador rol) { this.rol = rol; }
+
+    public BigDecimal getCosteHora() { return costeHora; }
+    public void setCosteHora(BigDecimal costeHora) { this.costeHora = costeHora; }
 
     // ---- metodos de UserDetails para el login ----
 

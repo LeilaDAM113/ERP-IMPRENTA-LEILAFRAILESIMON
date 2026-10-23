@@ -24,6 +24,7 @@ public record TrabajadorCrearRequest(
         String password,
         Integer idPuesto,
         BigDecimal salario,
+        BigDecimal costeHora,
         LocalDate fechaAlta,
         Boolean activo,
         RolTrabajador rol) {

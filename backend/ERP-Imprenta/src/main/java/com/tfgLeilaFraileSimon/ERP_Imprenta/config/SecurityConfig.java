@@ -132,9 +132,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/orden-trabajo/**").hasAnyAuthority(ADMIN, ENCARGADO)
 
                         // operarios de cada orden
-                        .requestMatchers(HttpMethod.GET, "/api/orden-trabajador/**", "/api/orden-empleado/**")
+                        .requestMatchers(HttpMethod.GET, "/api/orden-trabajador/**")
                             .hasAnyAuthority(ADMIN, ENCARGADO, OPERARIO)
-                        .requestMatchers("/api/orden-trabajador/**", "/api/orden-empleado/**")
+                        .requestMatchers("/api/orden-trabajador/**")
                             .hasAnyAuthority(ADMIN, ENCARGADO)
 
                         // maquinaria: la lleva el encargado, el operario solo la ve

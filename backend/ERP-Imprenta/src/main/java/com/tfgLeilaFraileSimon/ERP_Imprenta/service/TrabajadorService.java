@@ -74,6 +74,7 @@ public class TrabajadorService implements UserDetailsService {
         trabajador.setPassword(passwordEncoder.encode(datos.password()));
         trabajador.setPuesto(buscarPuesto(datos.idPuesto()));
         trabajador.setSalario(datos.salario());
+        trabajador.setCosteHora(datos.costeHora());
         trabajador.setFechaAlta(datos.fechaAlta());
         trabajador.setActivo(datos.activo());
         trabajador.setRol(rolConDefecto(datos.rol()));
@@ -91,6 +92,7 @@ public class TrabajadorService implements UserDetailsService {
         existente.setEmail(datos.email());
         existente.setPuesto(buscarPuesto(datos.idPuesto()));
         existente.setSalario(datos.salario());
+        existente.setCosteHora(datos.costeHora());
         existente.setFechaAlta(datos.fechaAlta());
         existente.setActivo(datos.activo());
 
