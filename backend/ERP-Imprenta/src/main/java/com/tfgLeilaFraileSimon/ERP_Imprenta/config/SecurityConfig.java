@@ -116,9 +116,12 @@ public class SecurityConfig {
                                 "/api/contacto-empresa/**")
                             .hasAnyAuthority(ADMIN, COMERCIAL)
 
-                        // catalogo: solo lo cambia el admin
-                        .requestMatchers(HttpMethod.GET, "/api/catalogo/**").hasAnyAuthority(ADMIN, COMERCIAL, ENCARGADO)
-                        .requestMatchers("/api/catalogo/**").hasAuthority(ADMIN)
+                        // catalogo y recetas de los productos: solo lo cambia el admin
+                        .requestMatchers(HttpMethod.GET, "/api/catalogo/**", "/api/producto-material/**",
+                                "/api/producto-proceso/**")
+                            .hasAnyAuthority(ADMIN, COMERCIAL, ENCARGADO)
+                        .requestMatchers("/api/catalogo/**", "/api/producto-material/**", "/api/producto-proceso/**")
+                            .hasAuthority(ADMIN)
 
                         // presupuestos: los hace el comercial
                         .requestMatchers(HttpMethod.GET, "/api/presupuesto/**", "/api/linea-presupuesto/**")
@@ -137,14 +140,19 @@ public class SecurityConfig {
                         .requestMatchers("/api/orden-trabajador/**")
                             .hasAnyAuthority(ADMIN, ENCARGADO)
 
+                        // tiempos y material gastado: los apunta el operario desde el movil
+                        .requestMatchers("/api/registro-tiempo/**", "/api/consumo-material/**")
+                            .hasAnyAuthority(ADMIN, ENCARGADO, OPERARIO)
+
                         // maquinaria: la lleva el encargado, el operario solo la ve
                         .requestMatchers(HttpMethod.GET, "/api/maquinaria/**").hasAnyAuthority(ADMIN, ENCARGADO, OPERARIO)
                         .requestMatchers("/api/maquinaria/**").hasAnyAuthority(ADMIN, ENCARGADO)
 
                         // almacen, pedidos y proveedores: los lleva el encargado
-                        .requestMatchers(HttpMethod.GET, "/api/inventario/**", "/api/pedido/**", "/api/proveedor/**")
+                        .requestMatchers(HttpMethod.GET, "/api/inventario/**", "/api/pedido/**", "/api/linea-pedido/**",
+                                "/api/proveedor/**")
                             .hasAnyAuthority(ADMIN, COMERCIAL, ENCARGADO, OPERARIO)
-                        .requestMatchers("/api/inventario/**", "/api/pedido/**", "/api/proveedor/**")
+                        .requestMatchers("/api/inventario/**", "/api/pedido/**", "/api/linea-pedido/**", "/api/proveedor/**")
                             .hasAnyAuthority(ADMIN, ENCARGADO)
 
                         // albaranes: los hacen el admin y el encargado, el transportista los ve
@@ -157,6 +165,14 @@ public class SecurityConfig {
                             .hasAnyAuthority(ADMIN, COMERCIAL)
                         .requestMatchers("/api/factura/**", "/api/linea-factura/**", "/api/pago/**")
                             .hasAuthority(ADMIN)
+
+                        // avisos: los ve cualquiera que haya entrado, los crea el admin o el encargado
+                        .requestMatchers(HttpMethod.GET, "/api/aviso/**").authenticated()
+                        .requestMatchers("/api/aviso/**").hasAnyAuthority(ADMIN, ENCARGADO)
+
+                        // configuracion (IVA, margen...): la ven todos menos el transportista, la cambia el admin
+                        .requestMatchers(HttpMethod.GET, "/api/configuracion/**").hasAnyAuthority(ADMIN, COMERCIAL, ENCARGADO, OPERARIO)
+                        .requestMatchers("/api/configuracion/**").hasAuthority(ADMIN)
 
                         // lo que no este en la lista esta prohibido
                         // (por si hago un controlador nuevo y se me olvida ponerlo)

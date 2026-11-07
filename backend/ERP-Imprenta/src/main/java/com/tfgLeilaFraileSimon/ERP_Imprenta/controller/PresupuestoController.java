@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Presupuesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PresupuestoService;
 
-// endpoints de Presupuesto: listar, ver uno, crear, modificar y borrar
 @RestController
 @RequestMapping("/api/presupuesto")
 public class PresupuestoController {

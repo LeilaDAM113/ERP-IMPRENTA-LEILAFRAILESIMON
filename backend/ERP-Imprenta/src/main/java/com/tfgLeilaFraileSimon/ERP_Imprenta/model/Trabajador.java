@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -32,12 +33,12 @@ public class Trabajador implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombreCompleto;
+    // Solo los ve el admin en /api/trabajador
+    @JsonIgnore
     private String dni;
     private String telefono;
-    // el email no se puede repetir porque es con lo que se entra
     @Column(unique = true)
     private String email;
-    // la contraseña va cifrada y es obligatoria
     // WRITE_ONLY: se puede mandar pero nunca sale en el json
     @Column(nullable = false)
     @JsonProperty(access = Access.WRITE_ONLY)
@@ -45,14 +46,15 @@ public class Trabajador implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "id_puesto")
     private Puesto puesto;
+    @JsonIgnore
     private BigDecimal salario;
     private LocalDate fechaAlta;
     private Boolean activo;
-    // el rol es un enum y se guarda como texto (ADMIN, COMERCIAL...)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private RolTrabajador rol;
-    // lo que cuesta una hora de este trabajador (para los presupuestos)
+    // lo que cuesta una hora de este trabajador 
+    @JsonIgnore
     private BigDecimal costeHora;
 
     public Integer getId() { return id; }
@@ -91,39 +93,42 @@ public class Trabajador implements UserDetails {
     public BigDecimal getCosteHora() { return costeHora; }
     public void setCosteHora(BigDecimal costeHora) { this.costeHora = costeHora; }
 
-    // ---- metodos de UserDetails para el login ----
+    // llevan @JsonIgnore para que no salgan en el json 
 
-    // para entrar se usa el email
     @Override
+    @JsonIgnore
     public String getUsername() {
         return email;
     }
-
-    // los permisos salen del rol, si no tiene le pongo USER
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         RolTrabajador rolEfectivo = rol == null ? RolTrabajador.USER : rol;
         return List.of(new SimpleGrantedAuthority(rolEfectivo.name()));
     }
 
-    // si esta dado de baja no puede entrar
+  
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return Boolean.TRUE.equals(getActivo());
     }
 
-    // estas tres las pide spring, las dejo a true
+
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }

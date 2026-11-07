@@ -1,0 +1,50 @@
+package com.tfgLeilaFraileSimon.ERP_Imprenta.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Aviso;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.service.AvisoService;
+
+@RestController
+@RequestMapping("/api/aviso")
+public class AvisoController {
+    private final AvisoService servicio;
+
+    public AvisoController(AvisoService servicio) {
+        this.servicio = servicio;
+    }
+
+    @GetMapping
+    public List<Aviso> listar() {
+        return servicio.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Aviso obtener(@PathVariable Integer id) {
+        return servicio.obtener(id);
+    }
+
+    @PostMapping
+    public Aviso anadir(@RequestBody Aviso objeto) {
+        return servicio.guardar(objeto);
+    }
+
+    @PutMapping("/{id}")
+    public Aviso actualizar(@PathVariable Integer id, @RequestBody Aviso objeto) {
+        return servicio.actualizar(id, objeto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable Integer id) {
+        servicio.eliminar(id);
+    }
+}
