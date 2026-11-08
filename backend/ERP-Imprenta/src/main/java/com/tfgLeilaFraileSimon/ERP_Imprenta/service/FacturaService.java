@@ -27,10 +27,12 @@ public class FacturaService {
 
     private final FacturaRepository repositorio;
     private final Buscador buscador;
+    private final CalculoService calculo;
 
-    public FacturaService(FacturaRepository repositorio, Buscador buscador) {
+    public FacturaService(FacturaRepository repositorio, Buscador buscador, CalculoService calculo) {
         this.repositorio = repositorio;
         this.buscador = buscador;
+        this.calculo = calculo;
     }
 
     // todos
@@ -48,6 +50,7 @@ public class FacturaService {
         Factura objeto = new Factura();
         copiarDatos(datos, objeto);
         completarFechas(objeto);
+        calculo.calcularFactura(objeto);
         return repositorio.save(objeto);
     }
 
@@ -57,6 +60,7 @@ public class FacturaService {
         Factura objeto = repositorio.findById(id).orElseThrow();
         copiarDatos(datos, objeto);
         completarFechas(objeto);
+        calculo.calcularFactura(objeto);
         return repositorio.save(objeto);
     }
 
@@ -140,7 +144,5 @@ public class FacturaService {
         objeto.setEstado(datos.estado());
         objeto.setBaseImponible(datos.baseImponible());
         objeto.setPorcentajeIva(datos.porcentajeIva());
-        objeto.setCuotaIva(datos.cuotaIva());
-        objeto.setTotal(datos.total());
     }
 }

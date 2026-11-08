@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 
 // datos para crear o modificar una factura
 // no lleva id (va en la url al modificar) y las cosas relacionadas van solo con su id
+// la cuota de IVA y el total no se mandan: los calcula CalculoService
 public record FacturaRequest(
         @NotBlank(message = "El numero es obligatorio")
         String numero,
@@ -22,8 +23,7 @@ public record FacturaRequest(
         LocalDate fechaPago,
         MetodoPago metodoPago,
         EstadoFactura estado,
+        @NotNull(message = "La base imponible es obligatoria")
         BigDecimal baseImponible,
-        BigDecimal porcentajeIva,
-        BigDecimal cuotaIva,
-        BigDecimal total) {
+        BigDecimal porcentajeIva) {
 }

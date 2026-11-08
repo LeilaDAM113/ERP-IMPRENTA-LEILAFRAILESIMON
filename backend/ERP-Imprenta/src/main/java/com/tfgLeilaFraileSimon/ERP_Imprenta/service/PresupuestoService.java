@@ -24,12 +24,14 @@ public class PresupuestoService {
     private final PresupuestoRepository repositorio;
     private final OrdenTrabajoRepository ordenTrabajoRepositorio;
     private final Buscador buscador;
+    private final CalculoService calculo;
 
     public PresupuestoService(PresupuestoRepository repositorio, OrdenTrabajoRepository ordenTrabajoRepositorio,
-            Buscador buscador) {
+            Buscador buscador, CalculoService calculo) {
         this.repositorio = repositorio;
         this.ordenTrabajoRepositorio = ordenTrabajoRepositorio;
         this.buscador = buscador;
+        this.calculo = calculo;
     }
 
     // todos
@@ -47,6 +49,8 @@ public class PresupuestoService {
         Presupuesto objeto = new Presupuesto();
         copiarDatos(datos, objeto);
         objeto.setEstado(EstadoPresupuesto.BORRADOR);
+        // todavia no tiene lineas: empieza en 0 (y el IVA al 21% si no se dice otro)
+        calculo.aplicarIva(objeto);
         return repositorio.save(objeto);
     }
 
@@ -57,6 +61,8 @@ public class PresupuestoService {
         Presupuesto objeto = repositorio.findById(id).orElseThrow();
         comprobarEstado(objeto, EstadoPresupuesto.BORRADOR, "modificar");
         copiarDatos(datos, objeto);
+        // por si ha cambiado el IVA, vuelvo a calcular el importe
+        calculo.aplicarIva(objeto);
         return repositorio.save(objeto);
     }
 
@@ -126,8 +132,6 @@ public class PresupuestoService {
         objeto.setFechaEmision(datos.fechaEmision());
         objeto.setFechaValidez(datos.fechaValidez());
         objeto.setDescripcion(datos.descripcion());
-        objeto.setSubtotal(datos.subtotal());
-        objeto.setImporte(datos.importe());
         objeto.setPorcentajeIva(datos.porcentajeIva());
     }
 }
