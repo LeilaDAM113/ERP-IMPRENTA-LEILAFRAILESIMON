@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.ConsumoMaterial;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.ConsumoMaterialRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.ConsumoMaterialResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.ConsumoMaterialService;
 
+import jakarta.validation.Valid;
 
+// endpoints de ConsumoMaterial: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/consumo-material")
 public class ConsumoMaterialController {
@@ -25,23 +29,23 @@ public class ConsumoMaterialController {
     }
 
     @GetMapping
-    public List<ConsumoMaterial> listar() {
-        return servicio.listar();
+    public List<ConsumoMaterialResponse> listar() {
+        return servicio.listar().stream().map(ConsumoMaterialResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public ConsumoMaterial obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public ConsumoMaterialResponse obtener(@PathVariable Integer id) {
+        return ConsumoMaterialResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public ConsumoMaterial anadir(@RequestBody ConsumoMaterial objeto) {
-        return servicio.guardar(objeto);
+    public ConsumoMaterialResponse anadir(@Valid @RequestBody ConsumoMaterialRequest datos) {
+        return ConsumoMaterialResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public ConsumoMaterial actualizar(@PathVariable Integer id, @RequestBody ConsumoMaterial objeto) {
-        return servicio.actualizar(id, objeto);
+    public ConsumoMaterialResponse actualizar(@PathVariable Integer id, @Valid @RequestBody ConsumoMaterialRequest datos) {
+        return ConsumoMaterialResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Factura;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.FacturaRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.FacturaResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.FacturaService;
 
+import jakarta.validation.Valid;
+
 // endpoints de Factura: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/factura")
 public class FacturaController {
@@ -25,23 +29,23 @@ public class FacturaController {
     }
 
     @GetMapping
-    public List<Factura> listar() {
-        return servicio.listar();
+    public List<FacturaResponse> listar() {
+        return servicio.listar().stream().map(FacturaResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public Factura obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public FacturaResponse obtener(@PathVariable Integer id) {
+        return FacturaResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public Factura anadir(@RequestBody Factura objeto) {
-        return servicio.guardar(objeto);
+    public FacturaResponse anadir(@Valid @RequestBody FacturaRequest datos) {
+        return FacturaResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public Factura actualizar(@PathVariable Integer id, @RequestBody Factura objeto) {
-        return servicio.actualizar(id, objeto);
+    public FacturaResponse actualizar(@PathVariable Integer id, @Valid @RequestBody FacturaRequest datos) {
+        return FacturaResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Pago;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PagoRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PagoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PagoService;
 
+import jakarta.validation.Valid;
+
 // endpoints de Pago: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/pago")
 public class PagoController {
@@ -25,23 +29,23 @@ public class PagoController {
     }
 
     @GetMapping
-    public List<Pago> listar() {
-        return servicio.listar();
+    public List<PagoResponse> listar() {
+        return servicio.listar().stream().map(PagoResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public Pago obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public PagoResponse obtener(@PathVariable Integer id) {
+        return PagoResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public Pago anadir(@RequestBody Pago objeto) {
-        return servicio.guardar(objeto);
+    public PagoResponse anadir(@Valid @RequestBody PagoRequest datos) {
+        return PagoResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public Pago actualizar(@PathVariable Integer id, @RequestBody Pago objeto) {
-        return servicio.actualizar(id, objeto);
+    public PagoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody PagoRequest datos) {
+        return PagoResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.LineaPresupuesto;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.LineaPresupuestoRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.LineaPresupuestoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.LineaPresupuestoService;
 
+import jakarta.validation.Valid;
+
 // endpoints de LineaPresupuesto: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/linea-presupuesto")
 public class LineaPresupuestoController {
@@ -25,23 +29,23 @@ public class LineaPresupuestoController {
     }
 
     @GetMapping
-    public List<LineaPresupuesto> listar() {
-        return servicio.listar();
+    public List<LineaPresupuestoResponse> listar() {
+        return servicio.listar().stream().map(LineaPresupuestoResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public LineaPresupuesto obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public LineaPresupuestoResponse obtener(@PathVariable Integer id) {
+        return LineaPresupuestoResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public LineaPresupuesto anadir(@RequestBody LineaPresupuesto objeto) {
-        return servicio.guardar(objeto);
+    public LineaPresupuestoResponse anadir(@Valid @RequestBody LineaPresupuestoRequest datos) {
+        return LineaPresupuestoResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public LineaPresupuesto actualizar(@PathVariable Integer id, @RequestBody LineaPresupuesto objeto) {
-        return servicio.actualizar(id, objeto);
+    public LineaPresupuestoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody LineaPresupuestoRequest datos) {
+        return LineaPresupuestoResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

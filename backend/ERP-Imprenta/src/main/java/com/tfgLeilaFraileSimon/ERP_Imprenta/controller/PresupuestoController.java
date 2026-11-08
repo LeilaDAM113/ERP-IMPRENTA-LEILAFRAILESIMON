@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Presupuesto;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PresupuestoRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PresupuestoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PresupuestoService;
 
+import jakarta.validation.Valid;
+
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/presupuesto")
 public class PresupuestoController {
@@ -24,23 +28,23 @@ public class PresupuestoController {
     }
 
     @GetMapping
-    public List<Presupuesto> listar() {
-        return servicio.listar();
+    public List<PresupuestoResponse> listar() {
+        return servicio.listar().stream().map(PresupuestoResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public Presupuesto obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public PresupuestoResponse obtener(@PathVariable Integer id) {
+        return PresupuestoResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public Presupuesto anadir(@RequestBody Presupuesto objeto) {
-        return servicio.guardar(objeto);
+    public PresupuestoResponse anadir(@Valid @RequestBody PresupuestoRequest datos) {
+        return PresupuestoResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public Presupuesto actualizar(@PathVariable Integer id, @RequestBody Presupuesto objeto) {
-        return servicio.actualizar(id, objeto);
+    public PresupuestoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody PresupuestoRequest datos) {
+        return PresupuestoResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

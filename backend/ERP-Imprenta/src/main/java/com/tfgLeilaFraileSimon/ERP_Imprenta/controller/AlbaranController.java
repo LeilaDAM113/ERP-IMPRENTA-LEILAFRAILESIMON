@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Albaran;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.AlbaranRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.AlbaranResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.AlbaranService;
 
+import jakarta.validation.Valid;
+
 // endpoints de Albaran: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/albaran")
 public class AlbaranController {
@@ -25,23 +29,23 @@ public class AlbaranController {
     }
 
     @GetMapping
-    public List<Albaran> listar() {
-        return servicio.listar();
+    public List<AlbaranResponse> listar() {
+        return servicio.listar().stream().map(AlbaranResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public Albaran obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public AlbaranResponse obtener(@PathVariable Integer id) {
+        return AlbaranResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public Albaran anadir(@RequestBody Albaran objeto) {
-        return servicio.guardar(objeto);
+    public AlbaranResponse anadir(@Valid @RequestBody AlbaranRequest datos) {
+        return AlbaranResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public Albaran actualizar(@PathVariable Integer id, @RequestBody Albaran objeto) {
-        return servicio.actualizar(id, objeto);
+    public AlbaranResponse actualizar(@PathVariable Integer id, @Valid @RequestBody AlbaranRequest datos) {
+        return AlbaranResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

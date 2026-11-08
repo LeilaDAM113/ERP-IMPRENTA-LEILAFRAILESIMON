@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.OrdenTrabajo;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.OrdenTrabajoRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.OrdenTrabajoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.OrdenTrabajoService;
 
+import jakarta.validation.Valid;
+
 // endpoints de OrdenTrabajo: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/orden-trabajo")
 public class OrdenTrabajoController {
@@ -25,23 +29,23 @@ public class OrdenTrabajoController {
     }
 
     @GetMapping
-    public List<OrdenTrabajo> listar() {
-        return servicio.listar();
+    public List<OrdenTrabajoResponse> listar() {
+        return servicio.listar().stream().map(OrdenTrabajoResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public OrdenTrabajo obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public OrdenTrabajoResponse obtener(@PathVariable Integer id) {
+        return OrdenTrabajoResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public OrdenTrabajo anadir(@RequestBody OrdenTrabajo objeto) {
-        return servicio.guardar(objeto);
+    public OrdenTrabajoResponse anadir(@Valid @RequestBody OrdenTrabajoRequest datos) {
+        return OrdenTrabajoResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public OrdenTrabajo actualizar(@PathVariable Integer id, @RequestBody OrdenTrabajo objeto) {
-        return servicio.actualizar(id, objeto);
+    public OrdenTrabajoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody OrdenTrabajoRequest datos) {
+        return OrdenTrabajoResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")

@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfgLeilaFraileSimon.ERP_Imprenta.model.RegistroTiempo;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.RegistroTiempoRequest;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.RegistroTiempoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.RegistroTiempoService;
 
+import jakarta.validation.Valid;
+
+// endpoints de RegistroTiempo: listar, ver uno, crear, modificar y borrar
+// recibe y devuelve DTOs
 @RestController
 @RequestMapping("/api/registro-tiempo")
 public class RegistroTiempoController {
@@ -24,23 +29,23 @@ public class RegistroTiempoController {
     }
 
     @GetMapping
-    public List<RegistroTiempo> listar() {
-        return servicio.listar();
+    public List<RegistroTiempoResponse> listar() {
+        return servicio.listar().stream().map(RegistroTiempoResponse::desde).toList();
     }
 
     @GetMapping("/{id}")
-    public RegistroTiempo obtener(@PathVariable Integer id) {
-        return servicio.obtener(id);
+    public RegistroTiempoResponse obtener(@PathVariable Integer id) {
+        return RegistroTiempoResponse.desde(servicio.obtener(id));
     }
 
     @PostMapping
-    public RegistroTiempo anadir(@RequestBody RegistroTiempo objeto) {
-        return servicio.guardar(objeto);
+    public RegistroTiempoResponse anadir(@Valid @RequestBody RegistroTiempoRequest datos) {
+        return RegistroTiempoResponse.desde(servicio.guardar(datos));
     }
 
     @PutMapping("/{id}")
-    public RegistroTiempo actualizar(@PathVariable Integer id, @RequestBody RegistroTiempo objeto) {
-        return servicio.actualizar(id, objeto);
+    public RegistroTiempoResponse actualizar(@PathVariable Integer id, @Valid @RequestBody RegistroTiempoRequest datos) {
+        return RegistroTiempoResponse.desde(servicio.actualizar(id, datos));
     }
 
     @DeleteMapping("/{id}")
