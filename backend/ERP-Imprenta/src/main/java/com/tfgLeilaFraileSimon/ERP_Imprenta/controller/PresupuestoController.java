@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.OrdenTrabajoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PresupuestoRequest;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.PresupuestoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.PresupuestoService;
@@ -50,5 +51,25 @@ public class PresupuestoController {
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
         servicio.eliminar(id);
+    }
+
+    // ---- ACCIONES (los botones del presupuesto) ----
+
+    // BORRADOR -> ENVIADO
+    @PostMapping("/{id}/enviar")
+    public PresupuestoResponse enviar(@PathVariable Integer id) {
+        return PresupuestoResponse.desde(servicio.enviar(id));
+    }
+
+    // ENVIADO -> RECHAZADO
+    @PostMapping("/{id}/rechazar")
+    public PresupuestoResponse rechazar(@PathVariable Integer id) {
+        return PresupuestoResponse.desde(servicio.rechazar(id));
+    }
+
+    // ENVIADO -> ACEPTADO, y devuelvo la orden de trabajo que se ha creado
+    @PostMapping("/{id}/aceptar")
+    public OrdenTrabajoResponse aceptar(@PathVariable Integer id) {
+        return OrdenTrabajoResponse.desde(servicio.aceptar(id));
     }
 }
