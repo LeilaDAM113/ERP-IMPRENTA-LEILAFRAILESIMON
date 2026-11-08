@@ -16,17 +16,20 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.InventarioRepository;
 
 // servicio de ConsumoMaterial (el material que el operario gasta en una orden)
 // cada vez que se apunta un consumo, se resta del stock del almacen.
-// si se modifica o se borra, se corrige el stock
+// si se modifica o se borra, se corrige el stock.
+// si el stock baja del minimo, se prepara solo un pedido al proveedor (ReposicionService)
 @Service
 public class ConsumoMaterialService {
     private final ConsumoMaterialRepository repositorio;
     private final InventarioRepository inventarioRepositorio;
+    private final ReposicionService reposicion;
     private final Buscador buscador;
 
     public ConsumoMaterialService(ConsumoMaterialRepository repositorio, InventarioRepository inventarioRepositorio,
-            Buscador buscador) {
+            ReposicionService reposicion, Buscador buscador) {
         this.repositorio = repositorio;
         this.inventarioRepositorio = inventarioRepositorio;
+        this.reposicion = reposicion;
         this.buscador = buscador;
     }
 
@@ -91,6 +94,8 @@ public class ConsumoMaterialService {
         material.setStockActual(stock.subtract(cantidad));
         material.setFechaActualizacion(LocalDate.now());
         inventarioRepositorio.save(material);
+        // si ha bajado del minimo, pido mas al proveedor
+        reposicion.revisar(material);
     }
 
     // devuelvo material al almacen
