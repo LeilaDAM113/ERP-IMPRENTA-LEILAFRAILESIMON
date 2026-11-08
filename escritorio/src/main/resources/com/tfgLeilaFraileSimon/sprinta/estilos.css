@@ -1,0 +1,96 @@
+/* estilos de Sprinta: fondo oscuro y morado */
+.root {
+    -fx-font-family: "System";
+    -fx-font-size: 13px;
+}
+
+.fondo {
+    -fx-background-color: #14121c;
+}
+
+.label {
+    -fx-text-fill: #e8e6f0;
+}
+
+.logo {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8b5cf6;
+}
+
+.logo-pequeno {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8b5cf6;
+}
+
+.subtitulo, .pie {
+    -fx-text-fill: #8f8aa3;
+}
+
+.titulo {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.tarjeta {
+    -fx-background-color: #1e1b2b;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+}
+
+.barra {
+    -fx-background-color: #1e1b2b;
+    -fx-padding: 12 20 12 20;
+}
+
+.text-field, .password-field {
+    -fx-background-color: #2a2639;
+    -fx-text-fill: #e8e6f0;
+    -fx-prompt-text-fill: #6f6a83;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}
+
+.button {
+    -fx-background-color: #2a2639;
+    -fx-text-fill: #e8e6f0;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.boton-principal {
+    -fx-background-color: #6c3fc5;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+.boton-principal:hover {
+    -fx-background-color: #8b5cf6;
+}
+
+.error {
+    -fx-text-fill: #f87171;
+}
+
+.table-view {
+    -fx-background-color: #1e1b2b;
+    -fx-control-inner-background: #1e1b2b;
+    -fx-control-inner-background-alt: #24203a;
+    -fx-table-cell-border-color: transparent;
+    -fx-selection-bar: #6c3fc5;
+    -fx-background-radius: 10;
+}
+
+.table-view .column-header, .table-view .column-header-background {
+    -fx-background-color: #2a2639;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #c4b5fd;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell .text {
+    -fx-fill: #e8e6f0;
+}

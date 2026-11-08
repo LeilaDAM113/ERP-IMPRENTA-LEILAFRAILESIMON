@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<!-- pantalla de clientes: arriba la barra, en medio la tabla, abajo el mensaje -->
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.tfgLeilaFraileSimon.sprinta.pantallas.ClientesController"
+            styleClass="fondo">
+    <top>
+        <HBox styleClass="barra" spacing="15" alignment="CENTER_LEFT">
+            <Label text="Sprinta" styleClass="logo-pequeno"/>
+            <Label text="Clientes" styleClass="titulo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="saludo"/>
+            <Button text="Recargar" onAction="#cargar"/>
+            <Button text="Cerrar sesion" onAction="#cerrarSesion"/>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="tabla">
+            <BorderPane.margin>
+                <Insets top="15" right="20" bottom="10" left="20"/>
+            </BorderPane.margin>
+            <columns>
+                <TableColumn fx:id="columnaNombre" text="Nombre" prefWidth="260"/>
+                <TableColumn fx:id="columnaTipo" text="Tipo" prefWidth="120"/>
+                <TableColumn fx:id="columnaFormaPago" text="Forma de pago" prefWidth="150"/>
+                <TableColumn fx:id="columnaEmail" text="Email" prefWidth="260"/>
+                <TableColumn fx:id="columnaTelefono" text="Telefono" prefWidth="140"/>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <Label fx:id="mensaje" styleClass="pie">
+            <BorderPane.margin>
+                <Insets top="0" right="20" bottom="15" left="20"/>
+            </BorderPane.margin>
+        </Label>
+    </bottom>
+</BorderPane>

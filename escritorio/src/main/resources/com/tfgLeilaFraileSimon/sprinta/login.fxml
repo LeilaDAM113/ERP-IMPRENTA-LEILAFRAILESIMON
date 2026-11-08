@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- pantalla de login: el logo, el email, la contraseña y el boton -->
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.tfgLeilaFraileSimon.sprinta.pantallas.LoginController"
+      styleClass="fondo" alignment="CENTER" spacing="12">
+    <padding>
+        <Insets top="40" right="50" bottom="40" left="50"/>
+    </padding>
+
+    <Label text="Sprinta" styleClass="logo"/>
+    <Label text="Gestion para imprentas" styleClass="subtitulo"/>
+
+    <VBox styleClass="tarjeta" spacing="10">
+        <Label text="Email"/>
+        <TextField fx:id="campoEmail" promptText="tu@email.com"/>
+        <Label text="Contraseña"/>
+        <PasswordField fx:id="campoPassword" promptText="********" onAction="#entrar"/>
+        <Button text="Entrar" styleClass="boton-principal" maxWidth="Infinity" onAction="#entrar"/>
+        <Label fx:id="mensajeError" styleClass="error" wrapText="true"/>
+    </VBox>
+</VBox>
