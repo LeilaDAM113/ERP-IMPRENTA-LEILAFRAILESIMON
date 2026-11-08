@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.FacturaRequest;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.FacturaResponse;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.dto.MorosoResponse;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.service.FacturaService;
 
 import jakarta.validation.Valid;
@@ -51,5 +52,19 @@ public class FacturaController {
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Integer id) {
         servicio.eliminar(id);
+    }
+
+    // ---- MOROSOS ----
+
+    // facturas sin pagar que ya han vencido
+    @GetMapping("/vencidas")
+    public List<FacturaResponse> vencidas() {
+        return servicio.vencidas().stream().map(FacturaResponse::desde).toList();
+    }
+
+    // clientes que deben dinero
+    @GetMapping("/morosos")
+    public List<MorosoResponse> morosos() {
+        return servicio.morosos();
     }
 }
