@@ -2,6 +2,7 @@ package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,8 @@ public class LineaPedido {
     @JoinColumn(name = "id_material")
     private Inventario material;
     private BigDecimal cantidad;
+    // precio por unidad con 4 decimales (un folleto puede costar 0,0216 €)
+    @Column(precision = 19, scale = 4)
     private BigDecimal precioUnitario;
 
     public Integer getId() { return id; }

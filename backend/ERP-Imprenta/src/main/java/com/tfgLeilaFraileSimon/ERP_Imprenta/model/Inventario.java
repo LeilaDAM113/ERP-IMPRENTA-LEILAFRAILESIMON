@@ -33,6 +33,8 @@ public class Inventario {
     // para poder tener 2,5 kg de tinta
     private BigDecimal stockActual;
     private BigDecimal stockMinimo;
+    // precio por unidad con 4 decimales (un folleto puede costar 0,0216 €)
+    @Column(precision = 19, scale = 4)
     private BigDecimal precioProducto;
     private LocalDate fechaActualizacion;
     @ManyToOne

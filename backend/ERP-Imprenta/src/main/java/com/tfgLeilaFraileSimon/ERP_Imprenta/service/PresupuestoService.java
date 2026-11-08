@@ -13,6 +13,7 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.EstadoPresupuesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.OrdenTrabajo;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Presupuesto;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.PrioridadOrden;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.LineaPresupuestoRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.OrdenTrabajoRepository;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.PresupuestoRepository;
 
@@ -25,13 +26,18 @@ public class PresupuestoService {
     private final OrdenTrabajoRepository ordenTrabajoRepositorio;
     private final Buscador buscador;
     private final CalculoService calculo;
+    private final LineaPresupuestoRepository lineaRepositorio;
+    private final PdfService pdfService;
 
     public PresupuestoService(PresupuestoRepository repositorio, OrdenTrabajoRepository ordenTrabajoRepositorio,
-            Buscador buscador, CalculoService calculo) {
+            Buscador buscador, CalculoService calculo, LineaPresupuestoRepository lineaRepositorio,
+            PdfService pdfService) {
         this.repositorio = repositorio;
         this.ordenTrabajoRepositorio = ordenTrabajoRepositorio;
         this.buscador = buscador;
         this.calculo = calculo;
+        this.lineaRepositorio = lineaRepositorio;
+        this.pdfService = pdfService;
     }
 
     // todos
@@ -73,6 +79,12 @@ public class PresupuestoService {
             throw new NoSuchElementException();
         }
         repositorio.deleteById(id);
+    }
+
+    // el presupuesto en PDF, con sus lineas
+    public byte[] pdf(Integer id) {
+        Presupuesto presupuesto = obtener(id);
+        return pdfService.presupuesto(presupuesto, lineaRepositorio.findByPresupuesto(presupuesto));
     }
 
     // ---- ACCIONES (los botones del presupuesto) ----

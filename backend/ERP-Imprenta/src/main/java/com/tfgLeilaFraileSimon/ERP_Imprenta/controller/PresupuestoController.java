@@ -2,6 +2,9 @@ package com.tfgLeilaFraileSimon.ERP_Imprenta.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,5 +74,15 @@ public class PresupuestoController {
     @PostMapping("/{id}/aceptar")
     public OrdenTrabajoResponse aceptar(@PathVariable Integer id) {
         return OrdenTrabajoResponse.desde(servicio.aceptar(id));
+    }
+
+    // el presupuesto en PDF (para verlo, imprimirlo o mandarlo al cliente)
+    // "inline" = que el navegador lo abra en vez de descargarlo
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> pdf(@PathVariable Integer id) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=presupuesto-" + id + ".pdf")
+                .body(servicio.pdf(id));
     }
 }

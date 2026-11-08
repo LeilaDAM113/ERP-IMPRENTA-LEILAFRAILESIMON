@@ -1,5 +1,6 @@
 package com.tfgLeilaFraileSimon.ERP_Imprenta.model;
 import java.math.BigDecimal;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,8 @@ public class LineaFactura {
     private LineaPresupuesto lineaPresupuesto;
     private Integer cantidad;
     private String descripcion;
+    // precio por unidad con 4 decimales (un folleto puede costar 0,0216 €)
+    @Column(precision = 19, scale = 4)
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
 

@@ -16,6 +16,7 @@ import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Cliente;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.EstadoFactura;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.model.Factura;
 import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.FacturaRepository;
+import com.tfgLeilaFraileSimon.ERP_Imprenta.repository.LineaFacturaRepository;
 
 // servicio de Factura
 // recibe el DTO, busca las cosas relacionadas por su id y guarda.
@@ -28,11 +29,16 @@ public class FacturaService {
     private final FacturaRepository repositorio;
     private final Buscador buscador;
     private final CalculoService calculo;
+    private final LineaFacturaRepository lineaRepositorio;
+    private final PdfService pdfService;
 
-    public FacturaService(FacturaRepository repositorio, Buscador buscador, CalculoService calculo) {
+    public FacturaService(FacturaRepository repositorio, Buscador buscador, CalculoService calculo,
+            LineaFacturaRepository lineaRepositorio, PdfService pdfService) {
         this.repositorio = repositorio;
         this.buscador = buscador;
         this.calculo = calculo;
+        this.lineaRepositorio = lineaRepositorio;
+        this.pdfService = pdfService;
     }
 
     // todos
@@ -74,6 +80,12 @@ public class FacturaService {
     }
 
     // paso los datos del DTO al objeto (lo uso al crear y al modificar)
+    // la factura en PDF, con sus lineas
+    public byte[] pdf(Integer id) {
+        Factura factura = obtener(id);
+        return pdfService.factura(factura, lineaRepositorio.findByFactura(factura));
+    }
+
     // ---- MOROSOS ----
 
     // facturas sin pagar cuya fecha de vencimiento ya ha pasado (la mas antigua primero)
